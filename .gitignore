@@ -1,0 +1,32 @@
+# Ignore build files
+build/
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+
+# Ignore IDE settings
+.idea/
+.vscode/
+*.iml
+
+# Ignore Folder 
+ios/
+linux/
+macos/
+lib/screens/
+
+# Ignore Dart & Flutter generated files
+.packages
+.pub-cache/
+.pub/
+.pubspec.lock
+
+# Ignore OS-specific files
+.DS_Store
+Thumbs.db
+
+# (ถ้ามี) Ignore Firebase & API keys
+.env
+*.keystore
+google-services.json
+firebase_options.dart
