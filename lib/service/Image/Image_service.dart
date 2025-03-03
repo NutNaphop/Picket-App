@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
+import 'package:locket_mockup/service/CRUD.dart';
 import 'package:locket_mockup/service/Friend/CRUD_friend.dart';
 
 Future<String?> uploadImageToCloudinary(File imageFile) async {
@@ -32,11 +33,16 @@ Future<String?> uploadImageToCloudinary(File imageFile) async {
 
 
 Future saveImageFireStore(Map data)async{
+
+  var userInfo = await getUser(data["by"]) as Map<String, dynamic>;
+  print(userInfo) ; 
+
   await FirebaseFirestore.instance.collection('pics').add({
     "by" : data["by"] , 
     "caption" : data["caption"] ,
     "date" : data["date"] , 
-    "url" : data["url"]
+    "url" : data["url"] , 
+    "update_user" :  userInfo["name"] 
   }) ;
 }
 
@@ -45,6 +51,8 @@ Stream<List<QueryDocumentSnapshot<Map<String, dynamic>>>> getImageFriend() async
   var friendList = await getFriendArray({
     "uid" : userId 
   }) as List;
+  friendList.add(userId) ; 
+  
   yield* FirebaseFirestore.instance
       .collection('pics')
       .where('by', whereIn: friendList)
