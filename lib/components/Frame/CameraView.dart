@@ -1,5 +1,7 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:locket_mockup/Pages/FriendSectionPage/FriendImageListPage.dart';
+import 'package:locket_mockup/components/Button/WindowButton.dart';
 
 class CameraView extends StatefulWidget {
   final CameraController controller;
@@ -63,7 +65,7 @@ class _CameraViewState extends State<CameraView> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Icon(Icons.window_rounded, size: 40, color: Colors.white),
+            WindowButton() , 
               GestureDetector(
                 onTap: () async {
                   await widget.initializeControllerFuture;

@@ -1,5 +1,7 @@
+import 'package:camera/camera.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:locket_mockup/Pages/MainSection/HomePage.dart';
 import 'package:locket_mockup/screens/HomeScreen.dart';
 import 'package:locket_mockup/screens/createUserScreen.dart';
 import 'package:locket_mockup/service/auth_service.dart';
@@ -15,41 +17,63 @@ class _LoginFormState extends State<LoginForm> {
   final _formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  bool _isShowpassword = false ; 
 
-  void signUserIn() async {
-    // แสดง CircularProgressIndicator
-    showDialog(
-      context: context,
-      barrierDismissible:
-          false, // ป้องกันไม่ให้ปิด dialog โดยการคลิกที่พื้นหลัง
-      builder: (context) {
-        return const Center(
-          child: CircularProgressIndicator(),
-        );
-      },
+void signUserIn() async {
+  // แสดง CircularProgressIndicator
+  showDialog(
+    context: context,
+    barrierDismissible: false, // ป้องกันการปิด dialog โดยการคลิกที่พื้นหลัง
+    builder: (context) {
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    },
+  );
+
+  try {
+    UserCredential userCredential =
+        await FirebaseAuth.instance.signInWithEmailAndPassword(
+      email: emailController.text,
+      password: passwordController.text,
     );
 
-    try {
-      UserCredential userCredential =
-          await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: emailController.text,
-        password: passwordController.text,
-      );
+    // ปิด dialog เมื่อล็อกอินสำเร็จ
+    Navigator.of(context).pop();
 
-      // ปิด dialog เมื่อล็อกอินสำเร็จ
-      Navigator.of(context).pop();
-
-      User? user_cred = userCredential.user;
-
-      var _isExist = await checkUser(user_cred!.uid);
-      var destination = _isExist ? HomeScreen() : createUserScreen();
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => destination));
-    } on FirebaseAuthException catch (e) {
-      // ปิด dialog เมื่อเกิดข้อผิดพลาด
-      Navigator.of(context).pop();
+    User? user_cred = userCredential.user;
+    var _isExist = await checkUser(user_cred!.uid);
+    final cameras = await availableCameras();
+    print(_isExist) ;
+    var destination = _isExist ? HomePage(camera: cameras[1],): createUserScreen();
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => destination));
+  } on FirebaseAuthException catch (e) {
+    // ปิด dialog เมื่อเกิดข้อผิดพลาด
+    Navigator.of(context).pop();
+    print('ERROE') ; 
+    print(e.code) ; 
+    String errorMessage = "Something went wrong, Please try again"; // ข้อความผิดพลาดเริ่มต้น
+    if (e.code == 'user-not-found') {
+      errorMessage = "Cannot find this user";
+    } else if (e.code == 'wrong-password') {
+      errorMessage = "Incoorect Password";
     }
+
+    // แสดงข้อความแจ้งเตือน
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          errorMessage,
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+        ),
+        backgroundColor: Colors.red,
+        behavior: SnackBarBehavior.floating,
+      ),
+    );
   }
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -77,14 +101,18 @@ class _LoginFormState extends State<LoginForm> {
                   controller: emailController,
                   autofocus: true,
                   decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Colors.white,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
+                      filled: true,
+                      fillColor: Colors.white,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      errorStyle: TextStyle(
+                          color: Colors.yellow,
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold)),
                   validator: (value) {
-                    if (value!.isEmpty) return 'กรุณากรอก email';
+                    if (value!.isEmpty) return 'Please enter your email' ;
+
                   },
                 ),
               ],
@@ -103,16 +131,24 @@ class _LoginFormState extends State<LoginForm> {
                 ),
                 TextFormField(
                   controller: passwordController,
-                  obscureText: true,
+                  obscureText: !_isShowpassword,
                   decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Colors.white,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
+                      filled: true,
+                      fillColor: Colors.white,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      suffixIcon: GestureDetector(onTap: (){
+                        setState(() {
+                          _isShowpassword = !_isShowpassword ; 
+                        });
+                      }, child: _isShowpassword ? Icon(Icons.visibility): Icon(Icons.visibility_off)),
+                      errorStyle: TextStyle(
+                          color: Colors.yellow,
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold)),
                   validator: (value) {
-                    if (value!.isEmpty) return 'กรุณากรอกรหัสผ่าน';
+                    if (value!.isEmpty) return 'Please enter your password';
                   },
                 ),
               ],
@@ -133,7 +169,9 @@ class _LoginFormState extends State<LoginForm> {
             Center(
               child: ElevatedButton(
                 onPressed: () {
-                  signUserIn() ; 
+                  if (_formKey.currentState!.validate()) {
+                    signUserIn();
+                  }
                 },
                 child: Text(
                   "Log in",

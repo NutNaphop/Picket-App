@@ -9,6 +9,7 @@ import 'package:locket_mockup/service/Image/Image_service.dart';
 
 class HomePage extends StatefulWidget {
   final CameraDescription camera;
+  
   HomePage({required this.camera});
 
   @override
@@ -20,6 +21,7 @@ class _HomePageState extends State<HomePage> {
   late Future<void> _initializeControllerFuture;
   Stream<List<QueryDocumentSnapshot<Map<String, dynamic>>>>? _imgFriendStream;
   String? _imagePath;
+  final PageController _pageController = PageController(); // ✅ PageController
 
   @override
   void initState() {
@@ -51,6 +53,7 @@ class _HomePageState extends State<HomePage> {
 
           var friendList = snapshot.data!;
           return PageView.builder(
+            controller: _pageController , 
             scrollDirection: Axis.vertical,
             itemCount: friendList.length + 1, // รวม CameraView ด้วย
             itemBuilder: (context, index) {
@@ -68,7 +71,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                 );
               } else {
-                return FriendFrame(friend_info: friendList[index - 1].data());
+                return FriendFrame(friend_info: friendList[index - 1].data() , pageController: _pageController,);
               }
             },
           );

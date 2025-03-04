@@ -1,11 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:locket_mockup/Pages/FriendSectionPage/FriendImageListPage.dart';
+import 'package:locket_mockup/components/Button/WindowButton.dart';
 import 'package:locket_mockup/helper/Dateformat.dart';
 import 'package:locket_mockup/service/Image/Image_service.dart';
 
 class FriendFrame extends StatefulWidget {
   var friend_info;
-  FriendFrame({required this.friend_info});
+  final PageController pageController;
+
+  FriendFrame({required this.friend_info, required this.pageController});
 
   @override
   State<FriendFrame> createState() => _FriendFrameState();
@@ -14,8 +18,6 @@ class FriendFrame extends StatefulWidget {
 class _FriendFrameState extends State<FriendFrame> {
   @override
   Widget build(BuildContext context) {
-
-
     return Scaffold(
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -34,7 +36,7 @@ class _FriendFrameState extends State<FriendFrame> {
                 child: Stack(
                   children: [
                     // รูปภาพของเพื่อน
-                       Positioned.fill(
+                    Positioned.fill(
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(50),
                         child: Image.network(
@@ -98,31 +100,36 @@ class _FriendFrameState extends State<FriendFrame> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Icon(
-                  Icons.window_rounded,
-                  size: 40,
-                  color: Colors.white,
-                ),
-                Stack(
-                  alignment: Alignment.center, // จัดให้ทุกอย่างอยู่ตรงกลาง
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(100),
-                      child: Container(
-                        height: 80,
-                        width: 80,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.all(Radius.circular(50)),
+                WindowButton(),
+                GestureDetector(
+                  onTap: () {
+                    widget.pageController.animateToPage(
+                      0,
+                      duration: Duration(milliseconds: 500),
+                      curve: Curves.easeInOut,
+                    );
+                  },
+                  child: Stack(
+                    alignment: Alignment.center, // จัดให้ทุกอย่างอยู่ตรงกลาง
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(100),
+                        child: Container(
+                          height: 80,
+                          width: 80,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.all(Radius.circular(50)),
+                          ),
                         ),
                       ),
-                    ),
-                    Icon(
-                      Icons.favorite,
-                      size: 60,
-                      color: Color(0xFFF281C1),
-                    ),
-                  ],
+                      Icon(
+                        Icons.favorite,
+                        size: 60,
+                        color: Color(0xFFF281C1),
+                      ),
+                    ],
+                  ),
                 ),
                 Icon(Icons.restart_alt_rounded, size: 40, color: Colors.white),
               ],

@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:locket_mockup/Pages/HomePage.dart';
+import 'package:locket_mockup/Pages/MainSection/HomePage.dart';
 import 'package:locket_mockup/components/Appbar/CustomAppbar.dart';
 import 'package:locket_mockup/service/Image/Image_service.dart';
 import 'package:image/image.dart' as img;

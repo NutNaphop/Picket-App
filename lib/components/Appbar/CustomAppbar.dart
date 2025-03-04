@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:locket_mockup/Pages/SettingSection/SettingPage.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
@@ -26,7 +27,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       actions: [
         Icon(Icons.group, color: Colors.white, size: 34),
         SizedBox(width: 10),
-        Icon(Icons.settings_outlined, color: Colors.white, size: 34),
+        GestureDetector(onTap: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) => SettingPage(),)) ; 
+        }, child: Icon(Icons.settings_outlined, color: Colors.white, size: 34)),
         SizedBox(width: 10),
       ],
     );

@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:locket_mockup/Pages/RegisterPage.dart';
-import 'package:locket_mockup/components/Form/LoginForm.dart';
+import 'package:locket_mockup/components/Form/ResetForm.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class ForgotPasswordPage extends StatefulWidget {
+  const ForgotPasswordPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<ForgotPasswordPage> createState() => _ForgotPasswordPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,10 +24,10 @@ class _LoginPageState extends State<LoginPage> {
                   spacing: 30,
                   children: [
                     Text(
-                      "Login",
+                      "Forgot Password",
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 48,
+                        fontSize: 40,
                         fontFamily: 'Josefin Sans',
                         fontWeight: FontWeight.w700,
                       ),
@@ -48,35 +48,13 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ),
                         Icon(
-                          Icons.favorite,
+                          Icons.question_mark,
                           size: 60,
                           color: Colors.white,
                         ),
                       ],
                     ),
-                    LoginForm(),
-                    Row(
-                      spacing: 5,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          "Don't you have any account",
-                          style: TextStyle(color: Colors.white),
-                          textAlign: TextAlign.center,
-                        ) ,
-                        GestureDetector(
-                          onTap: (){
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => RegisterPage(),)) ; 
-                          },
-                          child: Text("Register now" , style: TextStyle(
-                            color: Color(0xFFF281C1)
-                          ),
-                          
-                          )
-                          ,
-                        )
-                      ],
-                    )
+                    ResetForm() , 
                   ],
                 ),
               ],

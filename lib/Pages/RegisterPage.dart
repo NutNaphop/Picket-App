@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:locket_mockup/Pages/RegisterPage.dart';
-import 'package:locket_mockup/components/Form/LoginForm.dart';
+import 'package:locket_mockup/Pages/LoginPage.dart';
+import 'package:locket_mockup/components/Form/RegisterForm.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class RegisterPage extends StatefulWidget {
+  const RegisterPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,7 +24,7 @@ class _LoginPageState extends State<LoginPage> {
                   spacing: 30,
                   children: [
                     Text(
-                      "Login",
+                      "Sign Up",
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 48,
@@ -54,26 +54,28 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ],
                     ),
-                    LoginForm(),
+                    RegisterForm(),
                     Row(
                       spacing: 5,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          "Don't you have any account",
+                          "Already have an account ?",
                           style: TextStyle(color: Colors.white),
                           textAlign: TextAlign.center,
-                        ) ,
+                        ),
                         GestureDetector(
-                          onTap: (){
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => RegisterPage(),)) ; 
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => LoginPage(),
+                                ));
                           },
-                          child: Text("Register now" , style: TextStyle(
-                            color: Color(0xFFF281C1)
+                          child: Text(
+                            "Login here",
+                            style: TextStyle(color: Color(0xFFF281C1)),
                           ),
-                          
-                          )
-                          ,
                         )
                       ],
                     )
