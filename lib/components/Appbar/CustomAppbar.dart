@@ -1,11 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:locket_mockup/Pages/FriendSectionPage/FriendPage.dart';
+import 'package:locket_mockup/Pages/SettingSection/EditUsername.dart';
 import 'package:locket_mockup/Pages/SettingSection/SettingPage.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      leading: Icon(Icons.account_circle_outlined, color: Colors.white, size: 40),
+      leading: IconButton(
+          onPressed: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => EditUsernamePage(),
+                ));
+          },
+          icon: Icon(Icons.account_circle_outlined,
+              color: Colors.white, size: 40)),
       backgroundColor: Color(0xFF271943),
       title: Center(
         child: Container(
@@ -18,19 +29,30 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text("Everyone", style: TextStyle(fontSize: 16, color: Colors.white)),
+              Text("Everyone",
+                  style: TextStyle(fontSize: 16, color: Colors.white)),
               Icon(Icons.keyboard_arrow_down, size: 21, color: Colors.white),
             ],
           ),
         ),
       ),
       actions: [
-        Icon(Icons.group, color: Colors.white, size: 34),
-        SizedBox(width: 10),
-        GestureDetector(onTap: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => SettingPage(),)) ; 
-        }, child: Icon(Icons.settings_outlined, color: Colors.white, size: 34)),
-        SizedBox(width: 10),
+        IconButton(onPressed: (){
+                        Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => FriendPage(),
+                  ));
+        }, icon: Icon(Icons.group, color: Colors.white, size: 34),) , 
+        IconButton(
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SettingPage(),
+                  ));
+            },
+            icon: Icon(Icons.settings_outlined, color: Colors.white, size: 34)),
       ],
     );
   }

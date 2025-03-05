@@ -46,6 +46,7 @@ void signUserIn() async {
     final cameras = await availableCameras();
     print(_isExist) ;
     var destination = _isExist ? HomePage(camera: cameras[1],): createUserScreen();
+    
     Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (context) => destination));
   } on FirebaseAuthException catch (e) {
@@ -153,15 +154,20 @@ void signUserIn() async {
                 ),
               ],
             ),
-            Text(
-              'Forgot password?',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 16,
-                fontFamily: 'Inter',
-                fontWeight: FontWeight.w500,
+            GestureDetector(
+              onTap: () {
+                
+              },
+              child: Text(
+                'Forgot password?',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontFamily: 'Inter',
+                  fontWeight: FontWeight.w500,
+                ),
+                textAlign: TextAlign.right,
               ),
-              textAlign: TextAlign.right,
             ),
             SizedBox(
               height: 100,

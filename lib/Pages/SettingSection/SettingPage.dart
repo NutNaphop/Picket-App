@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:locket_mockup/Pages/MainSection/WelcomePage.dart';
 import 'package:locket_mockup/Pages/SettingSection/EditUsername.dart';
 import 'package:locket_mockup/components/ListTile/SettingMenu.dart';
 
@@ -38,7 +39,7 @@ class _SettingPageState extends State<SettingPage> {
         "menuText": "Sign Out",
         "icon": Icons.delete,
         "onTap": (BuildContext context) {
-          print("Signout Clicked");
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => WelcomePage(),)) ; 
           // เพิ่มโค้ดลบบัญชีที่นี่
         }
       }
@@ -128,7 +129,7 @@ class _SettingPageState extends State<SettingPage> {
               ),
               SizedBox(height: 10),
               Column(
-                spacing: 10,
+                spacing: 20,
                 children: [
                   for (var i = 0; i < dangerSetting.length; i++)
                     SettingMenu(menuMap: dangerSetting[i]),

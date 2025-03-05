@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:locket_mockup/Pages/LoginPage.dart';
 import 'package:locket_mockup/components/Form/RegisterForm.dart';
+import 'package:locket_mockup/components/Resource/Logo/Logo.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -32,28 +33,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         fontWeight: FontWeight.w700,
                       ),
                     ),
-                    Stack(
-                      alignment: Alignment.center, // จัดให้ทุกอย่างอยู่ตรงกลาง
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(100),
-                          child: Container(
-                            height: 80,
-                            width: 80,
-                            decoration: BoxDecoration(
-                              color: Color(0xFFF281C1),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(50)),
-                            ),
-                          ),
-                        ),
-                        Icon(
-                          Icons.favorite,
-                          size: 60,
-                          color: Colors.white,
-                        ),
-                      ],
-                    ),
+                    Logo(width: 80, height: 80) , 
                     RegisterForm(),
                     Row(
                       spacing: 5,
