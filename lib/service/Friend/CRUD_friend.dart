@@ -30,30 +30,44 @@ Stream<List<Map<String, dynamic>>> getFriendList(user) {
 }
 
 Future getFriendArray(user) async {
-var userInfo = await getUser(user["uid"]) as Map<String, dynamic>;
-var friendsList = userInfo["friends"] as List<dynamic>; // ดึงค่า "friends" ออกมาเป็น List
+  var userInfo = await getUser(user["uid"]) as Map<String, dynamic>;
+  var friendsList =
+      userInfo["friends"] as List<dynamic>; // ดึงค่า "friends" ออกมาเป็น List
 
-return friendsList ; 
-  
-  
+  return friendsList;
 }
 
 Stream<QuerySnapshot> getFriendRequests(String uid) {
   return FirebaseFirestore.instance
       .collection('friend_requests')
       .where('to', isEqualTo: uid)
-      .snapshots();
+      .snapshots(includeMetadataChanges: true);
 }
 
-Future<void> sendFriendRequest(Map user, String friendId) async {
+Future<bool> sendFriendRequest(Map user, String friendId) async {
   bool _isExist = await checkUser(friendId);
+
   if (_isExist && friendId.isNotEmpty) {
-    await FirebaseFirestore.instance.collection('friend_requests').add({
-      'from': user['uid'],
-      'from_username': user['name'],
-      'to': friendId,
-    });
+    var snapshot = await FirebaseFirestore.instance
+        .collection('friend_requests')
+        .where('from', isEqualTo: user["uid"])
+        .where('to', isEqualTo: friendId)
+        .get();
+
+    if (snapshot.docs.isEmpty) {
+      await FirebaseFirestore.instance.collection('friend_requests').add({
+        'from': user['uid'],
+        'from_username': user['name'],
+        'to': friendId,
+        'date': Timestamp.now()
+      });
+      return true;
+    } else {
+      print('Friend request already exists.');
+    }
   }
+
+  return false;
 }
 
 Future<void> acceptFriend(
@@ -77,4 +91,20 @@ Future<void> acceptFriend(
         .doc(requestId)
         .delete();
   }
+}
+
+Future<void> rejectFriend(String requestId,) async {
+  // ลบคำขอออกจาก friend_requests
+  await FirebaseFirestore.instance
+      .collection('friend_requests')
+      .doc(requestId)
+      .delete();
+}
+
+Future<void> deleteFriend(String id, String uid) async {
+  print(id);
+  print(uid);
+  await FirebaseFirestore.instance.collection('users').doc(uid).update({
+    "friends": FieldValue.arrayRemove([id])
+  });
 }

@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:locket_mockup/Pages/FriendSectionPage/FriendListPage.dart';
+import 'package:locket_mockup/Pages/FriendSectionPage/FriendRequestPage.dart';
+import 'package:locket_mockup/Pages/FriendSectionPage/SearchFriendPage.dart';
 import 'package:locket_mockup/components/ListTile/SettingMenu.dart';
 
 class FriendPage extends StatefulWidget {
@@ -17,26 +20,21 @@ class _FriendPageState extends State<FriendPage> {
         "menuText": "Add new friend",
         "icon": Icons.group_add_outlined,
         "onTap": (BuildContext context) {
-          print("Delete Account Clicked");
-          // เพิ่มโค้ดลบบัญชีที่นี่
+          Navigator.push(context, MaterialPageRoute(builder: (context) => SearchFriendPage(),)) ; 
         }
       },
       {
         "menuText": "Your Friends",
         "icon": Icons.diversity_3_rounded,
         "onTap": (BuildContext context) {
-          print("Delete Account Clicked");
-          // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => WelcomePage(),)) ; 
-          // เพิ่มโค้ดลบบัญชีที่นี่
+          Navigator.push(context, MaterialPageRoute(builder: (context) => FriendListPage(),)) ; 
         }
       } ,
         {
         "menuText": "Friend requests",
         "icon": Icons.assignment,
         "onTap": (BuildContext context) {
-          print("Delete Account Clicked");
-          // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => WelcomePage(),)) ; 
-          // เพิ่มโค้ดลบบัญชีที่นี่
+          Navigator.push(context, MaterialPageRoute(builder: (context) => FriendRequestPage(),)) ; 
         }
       }
     ];

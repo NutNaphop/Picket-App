@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:locket_mockup/helper/Dateformat.dart';
 
 class RequestListTile extends StatefulWidget {
-  const RequestListTile({super.key});
+  final Function(String, String, bool , String) handleAcceptEvent;
+  Map req_info;
+
+  RequestListTile({required this.req_info, required this.handleAcceptEvent});
 
   @override
   State<RequestListTile> createState() => _RequestListTileState();
@@ -11,14 +15,19 @@ class _RequestListTileState extends State<RequestListTile> {
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      key: ValueKey(widget.req_info["rid"]),
       leading: Icon(
         Icons.account_circle,
         color: Colors.black,
         size: 43,
       ),
       title: Text(
-        "Naphop",
+        widget.req_info["from_username"],
         style: TextStyle(color: Colors.black, fontSize: 16),
+      ),
+      subtitle: Text(
+        "${formatTimestamp(widget.req_info["date"])}",
+        style: TextStyle(fontSize: 12),
       ),
       trailing: Row(
         mainAxisSize: MainAxisSize.min, // ป้องกันการขยายเต็มพื้นที่
@@ -28,7 +37,8 @@ class _RequestListTileState extends State<RequestListTile> {
             style: ButtonStyle(
                 backgroundColor: WidgetStateProperty.all(Colors.green)),
             onPressed: () {
-              print("Click Accept") ; 
+              widget.handleAcceptEvent(
+                  widget.req_info["from"], widget.req_info["rid"], true , widget.req_info["from_username"]);
             },
           ),
           SizedBox(width: 8), // เว้นระยะห่างระหว่างปุ่ม
@@ -37,7 +47,8 @@ class _RequestListTileState extends State<RequestListTile> {
             style: ButtonStyle(
                 backgroundColor: WidgetStateProperty.all(Colors.red)),
             onPressed: () {
-              print("Click Close") ; 
+              widget.handleAcceptEvent(
+                  widget.req_info["from"], widget.req_info["rid"], false , widget.req_info["from_username"]);
             },
           ),
         ],

@@ -1,6 +1,7 @@
 import 'package:camera/camera.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:locket_mockup/Pages/FriendSectionPage/FriendPage.dart';
 import 'package:locket_mockup/Pages/MainSection/HomePage.dart';
 import 'package:locket_mockup/screens/HomeScreen.dart';
 import 'package:locket_mockup/screens/createUserScreen.dart';
@@ -45,7 +46,8 @@ void signUserIn() async {
     var _isExist = await checkUser(user_cred!.uid);
     final cameras = await availableCameras();
     print(_isExist) ;
-    var destination = _isExist ? HomePage(camera: cameras[1],): createUserScreen();
+    // var destination = _isExist ? HomePage(camera: cameras[1],): createUserScreen();
+    var destination = _isExist ? FriendPage(): createUserScreen();
     
     Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (context) => destination));
