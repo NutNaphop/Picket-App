@@ -32,18 +32,58 @@ class _FriendRequestPageState extends State<FriendRequestPage> {
           FirebaseAuth.instance.currentUser!.uid, requestId, fromUserId);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text("You have accepted ${friend_name} as a friend!"),
-          backgroundColor: Colors.green,
-        ),
+            content: Padding(
+              padding: EdgeInsets.all(10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Text(
+                    'You are now friend with $friend_name',
+                    style: TextStyle(
+                      color: const Color.fromARGB(255, 28, 181, 89),
+                      fontSize: 16.5,
+                    ),
+                  ),
+                  Icon(
+                    Icons.check_circle_outline,
+                    color: const Color.fromARGB(255, 28, 181, 89),
+                  ),
+                ],
+              ),
+            ),
+            backgroundColor: const Color.fromARGB(255, 248, 249, 250),
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10))),
       );
     } else {
       print("Rejected");
       rejectFriend(requestId);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text("You have rejected ${friend_name}'s request!"),
-          backgroundColor: Colors.red,
-        ),
+            content: Padding(
+              padding: EdgeInsets.all(10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Text(
+                    "You have rejected ${friend_name}'s request!",
+                    style: TextStyle(
+                      color: const Color.fromARGB(255, 255, 3, 3),
+                      fontSize: 16.5,
+                    ),
+                  ),
+                  Icon(
+                    Icons.cancel,
+                    color: const Color.fromARGB(255, 255, 3, 3),
+                  )
+                ],
+              ),
+            ),
+            backgroundColor: const Color.fromARGB(255, 254, 254, 254),
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10))),
       );
     }
   }
@@ -126,8 +166,11 @@ class _FriendRequestPageState extends State<FriendRequestPage> {
                                         fontWeight: FontWeight.bold),
                                     textAlign: TextAlign.center,
                                   ),
-                                  Text("Look like you haven't got a request",
-                                      style: TextStyle(fontSize: 18) , textAlign: TextAlign.center,),
+                                  Text(
+                                    "Look like you haven't got a request",
+                                    style: TextStyle(fontSize: 18),
+                                    textAlign: TextAlign.center,
+                                  ),
                                 ],
                               ),
                               Icon(

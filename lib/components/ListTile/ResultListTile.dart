@@ -18,13 +18,15 @@ class _ResultListTileState extends State<ResultListTile> {
   @override
   void initState() {
     super.initState();
-    _isAdd = false ;// ตรวจสอบสถานะเริ่มต้นจาก API
+    _isAdd = false; // ตรวจสอบสถานะเริ่มต้นจาก API
   }
 
   void addFriend(String friendId) async {
-    bool _isSuccess = await sendFriendRequest(
+     bool _isSuccess = await sendFriendRequest(
         {"uid": FirebaseAuth.instance.currentUser!.uid, "name": "Naphop"},
-        friendId);
+         friendId);
+
+    
 
     if (_isSuccess) {
       setState(() {
@@ -33,31 +35,57 @@ class _ResultListTileState extends State<ResultListTile> {
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text("Friend request sent successfully!"),
-          backgroundColor: Colors.green,
+          content: Padding(
+            padding: EdgeInsets.all(10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Text('Your friend request has been sent', style: TextStyle(
+                  color: const Color.fromARGB(255, 28, 181, 89),
+                  fontSize: 18,
+                ),),
+                Icon(Icons.check_circle_outline, color: const Color.fromARGB(255, 28, 181, 89),),
+              ],
+            ),
+          ),
+          backgroundColor: const Color.fromARGB(255, 248, 249, 250),
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))
         ),
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text("Failed to send friend request."),
-          backgroundColor: Colors.red,
+          content: Padding(
+            padding: EdgeInsets.all(10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+              Text('Failed to send friend request', style: TextStyle(
+                color: const Color.fromARGB(255, 255, 3, 3),
+                fontSize: 18,
+              ),),
+              Icon(Icons.cancel, color: const Color.fromARGB(255, 255, 3, 3),)
+              ],),),
+          backgroundColor: const Color.fromARGB(255, 254, 254, 254),
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))
         ),
       );
     }
   }
 
-  Widget createButton(String status){
-    print(status) ;
-    if (status == "Pending"){
-      return buttonAlreadyAdd() ; 
-    } else if (status == "Friend"){
-      return buttonFriend() ; 
+  Widget createButton(String status) {
+    print(status);
+    if (status == "Pending") {
+      return buttonAlreadyAdd();
+    } else if (status == "Friend") {
+      return buttonFriend();
     }
 
-    return buttonCanAdd() ; 
+    return buttonCanAdd();
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -80,7 +108,9 @@ class _ResultListTileState extends State<ResultListTile> {
         ),
         trailing: SizedBox(
           width: 133,
-          child: _isAdd ?  buttonAlreadyAdd() : createButton(widget.result_info["status"]),
+          child: _isAdd
+              ? buttonAlreadyAdd()
+              : createButton(widget.result_info["status"]),
         ),
       ),
     );

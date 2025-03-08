@@ -241,6 +241,8 @@ class _RegisterFormState extends State<RegisterForm> {
                   fixedSize: WidgetStateProperty.all(Size(280, 50)),
                   backgroundColor: WidgetStateProperty.all(Color(0xFFF281C1)),
                   foregroundColor: WidgetStateProperty.all(Colors.white),
+
+
                 ),
               ),
             )
