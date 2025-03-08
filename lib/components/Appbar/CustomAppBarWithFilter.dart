@@ -6,7 +6,7 @@ import 'package:locket_mockup/Pages/SettingSection/SettingPage.dart';
 import 'package:locket_mockup/providers/CameraProvider.dart';
 import 'package:provider/provider.dart';
 
-class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
+class CustomAppBarWithFilter extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     var camProvider = Provider.of<CameraProvider>(context, listen: false);
@@ -26,6 +26,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 MaterialPageRoute(
                   builder: (context) => SettingPage(),
                 ));
+            _initializeCamera() ; 
           },
           icon: Icon(Icons.account_circle_outlined,
               color: Colors.white, size: 40)),
@@ -40,11 +41,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            spacing: 10,
             children: [
-              Text("Picket",
-                  style: TextStyle(fontSize: 16, color: Colors.white , fontWeight: FontWeight.bold)),
-              Icon(Icons.favorite, size: 21, color: Colors.pink[100]),
+              Text("Filter",
+                  style: TextStyle(fontSize: 16, color: Colors.white)),
+              Icon(Icons.keyboard_arrow_down, size: 21, color: Colors.white),
             ],
           ),
         ),

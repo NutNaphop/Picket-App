@@ -1,77 +1,94 @@
 import 'package:camera/camera.dart';
-import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:locket_mockup/components/Appbar/CustomAppbar.dart';
+import 'package:flutter/material.dart';
 import 'package:locket_mockup/components/Frame/CameraView.dart';
 import 'package:locket_mockup/components/Frame/FriendFrame.dart';
 import 'package:locket_mockup/components/Frame/PreviewFrame.dart';
+import 'package:locket_mockup/providers/CameraProvider.dart';
+import 'package:locket_mockup/providers/ControlPageProvider.dart';
+import 'package:locket_mockup/providers/FriendImageProvider.dart';
 import 'package:locket_mockup/service/Image/Image_service.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
-  final CameraDescription camera;
-  
-  HomePage({required this.camera});
+  const HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  late CameraController _controller;
+  CameraController? _controller;
   late Future<void> _initializeControllerFuture;
   Stream<List<QueryDocumentSnapshot<Map<String, dynamic>>>>? _imgFriendStream;
   String? _imagePath;
-  final PageController _pageController = PageController(); // ✅ PageController
+  // final PageController _pageController = PageController();
+  late Future<List<CameraDescription>> _camerasFuture;
 
   @override
   void initState() {
     super.initState();
-    _controller = CameraController(widget.camera, ResolutionPreset.medium);
-    _initializeControllerFuture = _controller.initialize();
-    _imgFriendStream = getImageFriend(); // รับ Stream ของเพื่อน
+    _imgFriendStream = getImageFriend(); // โหลดรูปเพื่อน
+    _initCamera();
+  }
+
+  void _initCamera() async {
+    var camProvider = Provider.of<CameraProvider>(context, listen: false);
+    await camProvider.initializeCamera();
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    _controller?.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: CustomAppBar(),
-      body: StreamBuilder<List<QueryDocumentSnapshot<Map<String, dynamic>>>>(
-        stream: _imgFriendStream,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
-          }
-          if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return Center(child: Text("No friends found"));
-          }
+    var pageProvider = Provider.of<ControlPageProvider>(context, listen: false);
+    var ImageProvider =
+        Provider.of<ImageFriendProvider>(context, listen: false);
+    var camProvider = Provider.of<CameraProvider>(context); 
 
-          var friendList = snapshot.data!;
+    var _pageController = pageProvider.pageController;
+
+    return Scaffold(
+      body: Consumer<ImageFriendProvider>(
+        builder: (context, imageProvider, child) {
           return PageView.builder(
-            controller: _pageController , 
+            controller: _pageController,
             scrollDirection: Axis.vertical,
-            itemCount: friendList.length + 1, // รวม CameraView ด้วย
+            itemCount: imageProvider.images.length + 1,
             itemBuilder: (context, index) {
               if (index == 0) {
                 return Center(
-                  child: CameraView(
-                    controller: _controller,
-                    initializeControllerFuture: _initializeControllerFuture,
-                    onPictureTaken: (imagePath) {
-                      setState(() {
-                        _imagePath = imagePath;
-                        Navigator.push(context, PageRouteBuilder(pageBuilder: (context, animation, secondaryAnimation) => PreviewFrame(imagePath: imagePath), transitionDuration: Duration.zero , reverseTransitionDuration: Duration.zero )) ; 
-                      });
-                    },
-                  ),
+                  child: camProvider.isCameraInitialized &&
+                          camProvider.controller != null
+                      ? CameraView(
+                          controller: camProvider.controller!,
+                          initializeControllerFuture:
+                              camProvider.controller!.initialize(),
+                          onPictureTaken: (imagePath) {
+                            Navigator.push(
+                              context,
+                              PageRouteBuilder(
+                                pageBuilder:
+                                    (context, animation, secondaryAnimation) =>
+                                        PreviewFrame(imagePath: imagePath),
+                                transitionDuration: Duration.zero,
+                                reverseTransitionDuration: Duration.zero,
+                              ),
+                            );
+                          },
+                        )
+                      : Center(
+                          child:
+                              CircularProgressIndicator()), // ✅ แสดง loading ถ้ายังไม่พร้อม
                 );
               } else {
-                return FriendFrame(friend_info: friendList[index - 1].data() , pageController: _pageController,);
+                var img = imageProvider.images[index - 1].data();
+                return FriendFrame(
+                    friend_info: img, pageController: _pageController);
               }
             },
           );

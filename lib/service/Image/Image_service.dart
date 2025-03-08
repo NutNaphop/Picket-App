@@ -42,7 +42,7 @@ Future saveImageFireStore(Map data)async{
     "caption" : data["caption"] ,
     "date" : data["date"] , 
     "url" : data["url"] , 
-    "update_user" :  userInfo["name"] 
+    "username" :  userInfo["name"] 
   }) ;
 }
 
@@ -64,6 +64,10 @@ Stream<List<QueryDocumentSnapshot<Map<String, dynamic>>>> getImageFriend() async
           Timestamp timestampB = b['date'];
           return timestampB.compareTo(timestampA); // เรียงจากใหม่ไปเก่า
         });
-        return docs;
+
+        if (docs.length > 0){
+          return docs ;
+        }
+        return [];
       });
 }

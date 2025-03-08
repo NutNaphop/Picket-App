@@ -4,8 +4,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:locket_mockup/Pages/MainSection/HomePage.dart';
 import 'package:locket_mockup/components/Appbar/CustomAppbar.dart';
+import 'package:locket_mockup/providers/UserProvider.dart';
 import 'package:locket_mockup/service/Image/Image_service.dart';
 import 'package:image/image.dart' as img;
+import 'package:provider/provider.dart';
 // Import หน้า HomePage
 
 class PreviewFrame extends StatefulWidget {
@@ -22,6 +24,8 @@ class _PreviewFrameState extends State<PreviewFrame> {
   bool isUploaded = false;
 
   void handleUpload() async {
+      final userProvider = Provider.of<UserProvider>(context , listen : false) ;
+      final user_info = userProvider.userData ; 
     setState(() {
       isUploading = true;
     });
@@ -42,10 +46,11 @@ class _PreviewFrameState extends State<PreviewFrame> {
     var imgUrl = await uploadImageToCloudinary(file);
 
     await saveImageFireStore({
-      "by": FirebaseAuth.instance.currentUser!.uid,
+      "by": user_info?["uid"],
       "caption": "Hello World",
       "date": DateTime.now(),
       "url": imgUrl,
+      "username" : user_info?["name"] ,
     });
 
     setState(() {
@@ -65,7 +70,7 @@ class _PreviewFrameState extends State<PreviewFrame> {
       PageRouteBuilder(
         transitionDuration: Duration(milliseconds: 500),
         pageBuilder: (context, animation, secondaryAnimation) {
-          return HomePage(camera: cameras[1]);
+          return HomePage();
         },
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           return SlideTransition(

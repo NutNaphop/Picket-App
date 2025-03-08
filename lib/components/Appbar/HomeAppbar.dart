@@ -1,27 +1,15 @@
-import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:locket_mockup/Pages/FriendSectionPage/FriendPage.dart';
 import 'package:locket_mockup/Pages/SettingSection/EditUsername.dart';
 import 'package:locket_mockup/Pages/SettingSection/SettingPage.dart';
-import 'package:locket_mockup/providers/CameraProvider.dart';
-import 'package:provider/provider.dart';
 
-class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
+class HomeAppbar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
-    var camProvider = Provider.of<CameraProvider>(context, listen: false);
-    var cameras = availableCameras();
-
-    void _initializeCamera() async {
-      var cameras = await availableCameras();
-      await camProvider.initializeCamera();
-    }
-
     return AppBar(
       leading: IconButton(
-          onPressed: () async {
-            camProvider.disposeCamera();
-            await Navigator.push(
+          onPressed: () {
+            Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => SettingPage(),
@@ -40,28 +28,22 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            spacing: 10,
             children: [
               Text("Picket",
-                  style: TextStyle(fontSize: 16, color: Colors.white , fontWeight: FontWeight.bold)),
-              Icon(Icons.favorite, size: 21, color: Colors.pink[100]),
+                  style: TextStyle(fontSize: 16, color: Colors.white)),
+              Icon(Icons.favorite, size: 21, color: Colors.pink[200]),
             ],
           ),
         ),
       ),
       actions: [
-        IconButton(
-          onPressed: () async{
-            camProvider.disposeCamera() ;
-            await Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => FriendPage(),
-                ));
-            _initializeCamera() ; 
-          },
-          icon: Icon(Icons.group, color: Colors.white, size: 34),
-        ),
+        IconButton(onPressed: (){
+                        Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => FriendPage(),
+                  ));
+        }, icon: Icon(Icons.group, color: Colors.white, size: 34),) , 
       ],
     );
   }

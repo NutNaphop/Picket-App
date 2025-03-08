@@ -1,7 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:locket_mockup/Pages/MainSection/WelcomePage.dart';
 import 'package:locket_mockup/Pages/SettingSection/EditUsername.dart';
 import 'package:locket_mockup/components/ListTile/SettingMenu.dart';
+import 'package:locket_mockup/providers/UserProvider.dart';
+import 'package:provider/provider.dart';
 
 class SettingPage extends StatefulWidget {
   const SettingPage({super.key});
@@ -39,7 +42,17 @@ class _SettingPageState extends State<SettingPage> {
         "menuText": "Sign Out",
         "icon": Icons.delete,
         "onTap": (BuildContext context) {
-          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => WelcomePage(),)) ; 
+          var userProvider = Provider.of<UserProvider>(context, listen: false);
+
+          userProvider.logout();
+          FirebaseAuth.instance.signOut();
+
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => WelcomePage()),
+            (Route<dynamic> route) => false, // ลบหน้าทั้งหมดใน stack
+          );
+
           // เพิ่มโค้ดลบบัญชีที่นี่
         }
       }

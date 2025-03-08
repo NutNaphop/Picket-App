@@ -26,6 +26,7 @@ class _FriendListPageState extends State<FriendListPage> {
 
   @override
   Widget build(BuildContext context) {
+
     void updateSearchResults(String query) {
       setState(() {
         filteredList = tempList

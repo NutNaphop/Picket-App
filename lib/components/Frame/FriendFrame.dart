@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:locket_mockup/Pages/FriendSectionPage/FriendImageListPage.dart';
+import 'package:locket_mockup/components/Appbar/CustomAppBarWithFilter.dart';
+import 'package:locket_mockup/components/Appbar/CustomAppbar.dart';
 import 'package:locket_mockup/components/Button/WindowButton.dart';
 import 'package:locket_mockup/helper/Dateformat.dart';
 import 'package:locket_mockup/service/Image/Image_service.dart';
@@ -19,6 +21,7 @@ class _FriendFrameState extends State<FriendFrame> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: CustomAppBarWithFilter(),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -88,7 +91,7 @@ class _FriendFrameState extends State<FriendFrame> {
                 color: Colors.white,
               ),
               Text(
-                widget.friend_info["update_user"],
+                widget.friend_info["username"],
                 style: TextStyle(color: Colors.white, fontSize: 16),
               ),
               Text(formatTimestamp(widget.friend_info["date"]),
@@ -131,7 +134,7 @@ class _FriendFrameState extends State<FriendFrame> {
                     ],
                   ),
                 ),
-                Icon(Icons.restart_alt_rounded, size: 40, color: Colors.white),
+                Icon(Icons.mode_comment_outlined, size: 40, color: Colors.white),
               ],
             ),
           ),

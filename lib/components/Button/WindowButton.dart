@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:locket_mockup/Pages/FriendSectionPage/FriendImageListPage.dart';
+import 'package:locket_mockup/providers/CameraProvider.dart';
+import 'package:provider/provider.dart';
 
 class WindowButton extends StatefulWidget {
   const WindowButton({super.key});
@@ -11,6 +13,8 @@ class WindowButton extends StatefulWidget {
 class _WindowButtonState extends State<WindowButton> {
   @override
   Widget build(BuildContext context) {
+    final cameraProvider = Provider.of<CameraProvider>(context, listen: false);
+
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -18,6 +22,7 @@ class _WindowButtonState extends State<WindowButton> {
             MaterialPageRoute(
               builder: (context) => FriendImageListPage(),
             ));
+        cameraProvider.disposeCamera();
       },
       child: Icon(
         Icons.window_rounded,
