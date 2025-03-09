@@ -28,8 +28,12 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+    var camProvider = Provider.of<CameraProvider>(context, listen: false);
     _imgFriendStream = getImageFriend(); // โหลดรูปเพื่อน
-    _initCamera();
+    if (!camProvider.isCameraInitialized) {
+      print("Start Cam");
+      _initCamera();
+    }
   }
 
   void _initCamera() async {
@@ -46,10 +50,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     var pageProvider = Provider.of<ControlPageProvider>(context, listen: false);
-    var ImageProvider =
-        Provider.of<ImageFriendProvider>(context, listen: false);
-    var camProvider = Provider.of<CameraProvider>(context); 
-
+    var camProvider = Provider.of<CameraProvider>(context);
     var _pageController = pageProvider.pageController;
 
     return Scaffold(
@@ -59,6 +60,13 @@ class _HomePageState extends State<HomePage> {
             controller: _pageController,
             scrollDirection: Axis.vertical,
             itemCount: imageProvider.images.length + 1,
+            onPageChanged: (index) async {
+              if (index == 0) {
+                _initCamera();
+              } else {
+                await camProvider.disposeCamera(); // ปิดกล้องเมื่อเปลี่ยนหน้า
+              }
+            },
             itemBuilder: (context, index) {
               if (index == 0) {
                 return Center(

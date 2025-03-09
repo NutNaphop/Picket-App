@@ -5,7 +5,9 @@ import 'package:locket_mockup/components/Appbar/CustomAppBarWithFilter.dart';
 import 'package:locket_mockup/components/Appbar/CustomAppbar.dart';
 import 'package:locket_mockup/components/Button/WindowButton.dart';
 import 'package:locket_mockup/helper/Dateformat.dart';
+import 'package:locket_mockup/providers/CameraProvider.dart';
 import 'package:locket_mockup/service/Image/Image_service.dart';
+import 'package:provider/provider.dart';
 
 class FriendFrame extends StatefulWidget {
   var friend_info;
@@ -15,11 +17,21 @@ class FriendFrame extends StatefulWidget {
 
   @override
   State<FriendFrame> createState() => _FriendFrameState();
+  
 }
 
 class _FriendFrameState extends State<FriendFrame> {
+
+void initCamera(){
+    var camProvider = Provider.of<CameraProvider>(context) ; 
+    camProvider.initializeCamera()  ;
+}
+
+
   @override
   Widget build(BuildContext context) {
+    
+    print(widget.friend_info) ; 
     return Scaffold(
       appBar: CustomAppBarWithFilter(),
       body: Column(

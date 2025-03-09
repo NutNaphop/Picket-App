@@ -9,30 +9,29 @@ import 'package:provider/provider.dart';
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
-    var camProvider = Provider.of<CameraProvider>(context, listen: false);
-    var cameras = availableCameras();
+    var camProvider = Provider.of<CameraProvider>(context);
 
     void _initializeCamera() async {
-      var cameras = await availableCameras();
       await camProvider.initializeCamera();
     }
 
     return AppBar(
       leading: IconButton(
           onPressed: () async {
-            camProvider.disposeCamera();
-            await Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => SettingPage(),
-                ));
+            await Navigator.push(context, MaterialPageRoute(
+              builder: (context) {
+                camProvider.disposeCamera();
+                return SettingPage();
+              },
+            ));
+            _initializeCamera();
           },
           icon: Icon(Icons.account_circle_outlined,
               color: Colors.white, size: 40)),
       backgroundColor: Color(0xFF271943),
       title: Center(
         child: Container(
-          width: 140,
+          width: 170,
           height: 37,
           decoration: BoxDecoration(
             color: Colors.grey[500],
@@ -43,7 +42,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             spacing: 10,
             children: [
               Text("Picket",
-                  style: TextStyle(fontSize: 16, color: Colors.white , fontWeight: FontWeight.bold)),
+                  style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold)),
               Icon(Icons.favorite, size: 21, color: Colors.pink[100]),
             ],
           ),
@@ -52,13 +54,13 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       actions: [
         IconButton(
           onPressed: () async{
-            camProvider.disposeCamera() ;
-            await Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => FriendPage(),
-                ));
-            _initializeCamera() ; 
+            await Navigator.push(context, MaterialPageRoute(
+              builder: (context) {
+                camProvider.disposeCamera();
+                return FriendPage();
+              },
+            ));
+            _initializeCamera();
           },
           icon: Icon(Icons.group, color: Colors.white, size: 34),
         ),

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:locket_mockup/Pages/MainSection/WelcomePage.dart';
 import 'package:locket_mockup/Pages/SettingSection/EditUsername.dart';
 import 'package:locket_mockup/components/ListTile/SettingMenu.dart';
+import 'package:locket_mockup/providers/CameraProvider.dart';
 import 'package:locket_mockup/providers/UserProvider.dart';
 import 'package:provider/provider.dart';
 
@@ -16,6 +17,8 @@ class SettingPage extends StatefulWidget {
 class _SettingPageState extends State<SettingPage> {
   @override
   Widget build(BuildContext context) {
+    var camProvider = Provider.of<CameraProvider>(context);
+
     List generalSetting = [
       {
         "menuText": "Edit Profile",
@@ -57,6 +60,7 @@ class _SettingPageState extends State<SettingPage> {
         }
       }
     ];
+
     return Scaffold(
       appBar: AppBar(
         leading: GestureDetector(

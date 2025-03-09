@@ -8,7 +8,7 @@ class CameraProvider extends ChangeNotifier {
   final List<CameraDescription> cameras;
 
   CameraProvider({required this.cameras}) {
-    initializeCamera(); // ✅ Initialize here
+    
   }
 
   CameraController? get controller => _controller;
@@ -46,10 +46,10 @@ class CameraProvider extends ChangeNotifier {
   }
 
   // Dispose Camera
-  void disposeCamera() {
+  Future<void> disposeCamera() async {
     if (_controller != null) {
-      _controller?.dispose();
-      _isCameraInitialized = false;
+      await _controller!.dispose();
+      _controller = null;
       notifyListeners();
     }
   }

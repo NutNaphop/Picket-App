@@ -2,7 +2,6 @@ import 'package:camera/camera.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:locket_mockup/Pages/LoginPage.dart';
-import 'package:locket_mockup/Pages/MainSection/HomePage.dart';
 import 'package:locket_mockup/providers/CameraProvider.dart';
 import 'package:locket_mockup/providers/ControlPageProvider.dart';
 import 'package:locket_mockup/providers/FriendDataProvider.dart';
