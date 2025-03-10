@@ -28,12 +28,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    var camProvider = Provider.of<CameraProvider>(context, listen: false);
-    _imgFriendStream = getImageFriend(); // โหลดรูปเพื่อน
-    if (!camProvider.isCameraInitialized) {
-      print("Start Cam");
       _initCamera();
-    }
   }
 
   void _initCamera() async {
@@ -63,6 +58,9 @@ class _HomePageState extends State<HomePage> {
             onPageChanged: (index) async {
               if (index == 0) {
                 _initCamera();
+                imageProvider.clearFilter() ; 
+                
+                // imageProvider.fetchImages() ; // It's work but not good u need to make drop down again after 
               } else {
                 await camProvider.disposeCamera(); // ปิดกล้องเมื่อเปลี่ยนหน้า
               }
@@ -94,9 +92,9 @@ class _HomePageState extends State<HomePage> {
                               CircularProgressIndicator()), // ✅ แสดง loading ถ้ายังไม่พร้อม
                 );
               } else {
-                var img = imageProvider.images[index - 1].data();
+                var img = imageProvider.images[index - 1];
                 return FriendFrame(
-                    friend_info: img, pageController: _pageController);
+                    friend_info: img, pageController: _pageController , index: index,);
               }
             },
           );

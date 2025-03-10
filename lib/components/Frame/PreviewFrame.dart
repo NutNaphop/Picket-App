@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:locket_mockup/Pages/MainSection/HomePage.dart';
 import 'package:locket_mockup/components/Appbar/CustomAppbar.dart';
+import 'package:locket_mockup/providers/FriendImageProvider.dart';
 import 'package:locket_mockup/providers/UserProvider.dart';
 import 'package:locket_mockup/service/Image/Image_service.dart';
 import 'package:image/image.dart' as img;
@@ -24,8 +25,9 @@ class _PreviewFrameState extends State<PreviewFrame> {
   bool isUploaded = false;
 
   void handleUpload() async {
-      final userProvider = Provider.of<UserProvider>(context , listen : false) ;
-      final user_info = userProvider.userData ; 
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    final user_info = userProvider.userData;
+
     setState(() {
       isUploading = true;
     });
@@ -50,7 +52,7 @@ class _PreviewFrameState extends State<PreviewFrame> {
       "caption": "Hello World",
       "date": DateTime.now(),
       "url": imgUrl,
-      "username" : user_info?["name"] ,
+      "username": user_info?["name"],
     });
 
     setState(() {
@@ -61,9 +63,8 @@ class _PreviewFrameState extends State<PreviewFrame> {
     // รอ 1 วินาทีเพื่อให้เห็นไอคอนติ๊กถูก
     await Future.delayed(Duration(seconds: 1));
 
-    // 🔹 เรียกกล้องใหม่ก่อนเปลี่ยนหน้าไป HomePage
-    final cameras = await availableCameras();
-
+    // TODO : Should call imgProvider to update state
+    
     // 🔹 ใช้ PageRouteBuilder เพื่อให้เลื่อนขึ้น
     Navigator.pushReplacement(
       context,
@@ -104,8 +105,8 @@ class _PreviewFrameState extends State<PreviewFrame> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Transform(
-                     alignment: Alignment.center,
-                     transform: Matrix4.identity()..scale(-1.0, 1.0),
+                    alignment: Alignment.center,
+                    transform: Matrix4.identity()..scale(-1.0, 1.0),
                     child: Image.file(
                       File(widget.imagePath),
                       fit: BoxFit.cover,

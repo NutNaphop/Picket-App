@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:locket_mockup/Pages/SettingSection/SettingPage.dart';
+import 'package:locket_mockup/components/BottomSheet/ProfileSheet.dart';
+import 'package:locket_mockup/providers/UserProvider.dart';
+import 'package:locket_mockup/service/CRUD.dart';
+import 'package:provider/provider.dart';
 
 class EditUsernamePage extends StatefulWidget {
   const EditUsernamePage({super.key});
@@ -9,10 +14,82 @@ class EditUsernamePage extends StatefulWidget {
 
 class _EditUsernamePageState extends State<EditUsernamePage> {
   final _formKey = GlobalKey<FormState>();
-  final _usernameController = TextEditingController();
+  late String profileUrl;
+
+  void setVariable() async {
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    final user_info = userProvider.userData;
+    profileUrl = user_info?["profile"];
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    setVariable();
+  }
+
+  void setProfile(String selectProfile) {
+    if (selectProfile.isNotEmpty) {
+      setState(() {
+        profileUrl = selectProfile;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    final user_info = userProvider.userData;
+    final _usernameController = TextEditingController(text: user_info?["name"]);
+    bool _isLoading = false;
+
+    print(user_info);
+
+    void handleUpdateSubmit() async {
+      if (!_formKey.currentState!.validate()) return;
+      setState(() {
+        _isLoading = true;
+      });
+
+      Map<String, dynamic> user = {
+        "uid": user_info?["uid"],
+        "name": _usernameController.text,
+        "profile": profileUrl,
+      };
+
+      try {
+        await updateUser(user);
+
+        user.addAll({
+          "friends_request": user_info?["friends_request"],
+          "friends": user_info?["friends"],
+        });
+
+        userProvider.updateUserData(user);
+
+        // บังคับให้ UI อัปเดตทันที
+        setState(() {
+          _isLoading = false ; 
+        });
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+              content: Text("Profile updated successfully!"),
+              backgroundColor: Colors.green,
+              duration: Duration(seconds: 2)),
+        );
+
+        await Future.delayed(Duration(seconds: 3));
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("Failed to update profile: $e"),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
+
     return Scaffold(
       appBar: AppBar(
         leading: GestureDetector(
@@ -39,42 +116,19 @@ class _EditUsernamePageState extends State<EditUsernamePage> {
                   width: 30,
                   height: 30,
                 ),
-                Stack(
-                  alignment: Alignment.center, // จัดให้ทุกอย่างอยู่ตรงกลาง
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(100),
-                      child: Container(
-                        height: 80,
-                        width: 80,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.all(Radius.circular(50)),
-                        ),
-                      ),
-                    ),
-                    Icon(
-                      Icons.group,
-                      size: 60,
-                      color: Color(0xFF271943),
-                    ),
-                  ],
+                CircleAvatar(
+                  backgroundImage: NetworkImage(profileUrl),
+                  radius: 60,
                 ),
                 SizedBox(
-                  width: 30,
-                  height: 10,
+                  height: 20,
                 ),
-                Text(
-                  "Edit Profile",
-                  style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold),
-                ),
+                ProfileSheet(setProfile: setProfile),
                 SizedBox(
                   height: 30,
                 ),
                 Form(
+                  key: _formKey,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -87,15 +141,6 @@ class _EditUsernamePageState extends State<EditUsernamePage> {
                         textAlign: TextAlign.center,
                       ),
                       SizedBox(height: 10),
-                      Text(
-                        'Username',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                          fontFamily: 'Inter',
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
                       TextFormField(
                         controller: _usernameController,
                         decoration: InputDecoration(
@@ -117,24 +162,30 @@ class _EditUsernamePageState extends State<EditUsernamePage> {
                   ),
                 ),
                 SizedBox(
-                  height: 350,
+                  height: 320,
                 ),
                 Center(
                   child: ElevatedButton(
                     onPressed: () {
-                      if (_formKey.currentState!.validate()) {}
+                      if (_formKey.currentState!.validate()) {
+                        handleUpdateSubmit();
+                        _usernameController.clear();
+                      }
                     },
-                    child: Text(
-                      "Save change",
-                      style:
-                          TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-                    ),
                     style: ButtonStyle(
                       fixedSize: WidgetStateProperty.all(Size(280, 50)),
                       backgroundColor:
                           WidgetStateProperty.all(Color(0xFFF281C1)),
                       foregroundColor: WidgetStateProperty.all(Colors.white),
                     ),
+                    child: _isLoading
+                        ? Center(
+                            child: CircularProgressIndicator(),
+                          )
+                        : Text("Saved Change" , style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),),
                   ),
                 )
               ],

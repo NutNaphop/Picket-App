@@ -9,6 +9,7 @@ Future<void> createUser(Map user) async {
     'uid': user["uid"],
     'friends': [],
     'friends_request': [],
+    'profile': user["url"]
   });
 }
 
@@ -18,6 +19,36 @@ Future<Object?> getUser(String uid) async {
 
   return documentSnapshot.data();
 }
+
+Future<void> updateUser(var user) async {
+  await FirebaseFirestore.instance
+      .collection('users')
+      .doc(user["uid"])
+      .update({'name': user["name"], 'profile': user["profile"]});
+}
+
+Future<void> deleteUserAccount() async {
+  try {
+    User? user = FirebaseAuth.instance.currentUser;
+    
+    if (user != null) {
+      String uid = user.uid;
+
+      // ลบข้อมูลผู้ใช้จาก Firestore
+      await FirebaseFirestore.instance.collection('users').doc(uid).delete();
+
+      // ลบผู้ใช้จาก Firebase Authentication
+      await user.delete();
+
+      print("✅ User account deleted successfully!");
+    } else {
+      print("⚠ No user is currently signed in.");
+    }
+  } catch (e) {
+    print("❌ Failed to delete user: $e");
+  }
+}
+
 
 Future<List> getListOfUser(String uid) async {
   ;
@@ -56,16 +87,16 @@ Future<List> getListOfUser(String uid) async {
   // วนลูปแสดงข้อมูลของแต่ละเอกสาร
   for (var doc in snapshot.docs) {
     var user_id = doc["uid"];
-    print('userId : $user_id') ; 
+    print('userId : $user_id');
     String status;
     if (requestedUserIds.contains(user_id)) {
-      print('Set Pending') ; 
+      print('Set Pending');
       status = "Pending";
     } else if (friendUserIds.contains(user_id)) {
-      print("Set Friend") ; 
+      print("Set Friend");
       status = "Friend";
     } else {
-       status = "Add";
+      status = "Add";
     }
 
     user_info.add({

@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:locket_mockup/Pages/LoginPage.dart';
 import 'package:locket_mockup/screens/createUserScreen.dart';
 
 class RegisterForm extends StatefulWidget {
@@ -48,6 +49,7 @@ class _RegisterFormState extends State<RegisterForm> {
               ),
               backgroundColor: Colors.green,
               behavior: SnackBarBehavior.floating,
+              duration: Duration(seconds: 2),
             ),
           );
 
@@ -55,11 +57,13 @@ class _RegisterFormState extends State<RegisterForm> {
           User? user = userCredential.user;
           bool isNewUser = userCredential.additionalUserInfo!.isNewUser;
 
+          await Future.delayed(Duration(seconds: 3)) ; 
+
           if (isNewUser) {
             // ไปที่หน้า createUserScreen
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => createUserScreen()),
+              MaterialPageRoute(builder: (context) => LoginPage()),
             );
           }
         } else {
@@ -126,7 +130,7 @@ class _RegisterFormState extends State<RegisterForm> {
                 ),
                 TextFormField(
                   controller: emailController,
-                  autofocus: true,
+                  autofocus: false,
                   decoration: InputDecoration(
                       filled: true,
                       fillColor: Colors.white,

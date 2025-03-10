@@ -1,19 +1,16 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:locket_mockup/Pages/FriendSectionPage/FriendImageListPage.dart';
 import 'package:locket_mockup/components/Appbar/CustomAppBarWithFilter.dart';
-import 'package:locket_mockup/components/Appbar/CustomAppbar.dart';
 import 'package:locket_mockup/components/Button/WindowButton.dart';
 import 'package:locket_mockup/helper/Dateformat.dart';
 import 'package:locket_mockup/providers/CameraProvider.dart';
-import 'package:locket_mockup/service/Image/Image_service.dart';
 import 'package:provider/provider.dart';
 
 class FriendFrame extends StatefulWidget {
   var friend_info;
   final PageController pageController;
+  int index ; 
 
-  FriendFrame({required this.friend_info, required this.pageController});
+  FriendFrame({required this.friend_info, required this.pageController , required this.index});
 
   @override
   State<FriendFrame> createState() => _FriendFrameState();
@@ -30,8 +27,10 @@ void initCamera(){
 
   @override
   Widget build(BuildContext context) {
-    
-    print(widget.friend_info) ; 
+    var img_info = widget.friend_info["image"] ; 
+    var profile = widget.friend_info["profile"] ; 
+    var displayName = widget.friend_info["name"] ; 
+
     return Scaffold(
       appBar: CustomAppBarWithFilter(),
       body: Column(
@@ -55,7 +54,7 @@ void initCamera(){
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(50),
                         child: Image.network(
-                          widget.friend_info["url"],
+                          img_info["url"],
                           fit: BoxFit.cover, // ปรับภาพให้พอดี
                         ),
                       ),
@@ -75,7 +74,7 @@ void initCamera(){
                           borderRadius: BorderRadius.circular(15),
                         ),
                         child: Text(
-                          widget.friend_info["caption"], // Caption
+                          img_info["caption"], // Caption
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: Colors.white,
@@ -97,16 +96,15 @@ void initCamera(){
             mainAxisAlignment: MainAxisAlignment.center,
             spacing: 20,
             children: [
-              Icon(
-                Icons.account_circle_outlined,
-                size: 30,
-                color: Colors.white,
-              ),
+              CircleAvatar(
+                backgroundImage: NetworkImage(profile),
+                radius: 15,
+              ) ,
               Text(
-                widget.friend_info["username"],
+                displayName,
                 style: TextStyle(color: Colors.white, fontSize: 16),
               ),
-              Text(formatTimestamp(widget.friend_info["date"]),
+              Text(formatTimestamp(img_info["date"]),
                   style: TextStyle(color: Colors.grey, fontSize: 16))
             ],
           ),

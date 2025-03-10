@@ -2,9 +2,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:locket_mockup/Pages/MainSection/WelcomePage.dart';
 import 'package:locket_mockup/Pages/SettingSection/EditUsername.dart';
+import 'package:locket_mockup/components/BottomSheet/DeleteSheet.dart';
 import 'package:locket_mockup/components/ListTile/SettingMenu.dart';
 import 'package:locket_mockup/providers/CameraProvider.dart';
 import 'package:locket_mockup/providers/UserProvider.dart';
+import 'package:locket_mockup/service/CRUD.dart';
 import 'package:provider/provider.dart';
 
 class SettingPage extends StatefulWidget {
@@ -18,6 +20,13 @@ class _SettingPageState extends State<SettingPage> {
   @override
   Widget build(BuildContext context) {
     var camProvider = Provider.of<CameraProvider>(context);
+    var userProvider = Provider.of<UserProvider>(context, listen: true);
+    var user_info = userProvider.userData;
+    var profileUrl = user_info?["profile"];
+
+    void deleteAccount() {
+      deleteUserAccount();
+    }
 
     List generalSetting = [
       {
@@ -31,13 +40,15 @@ class _SettingPageState extends State<SettingPage> {
         }
       }
     ];
-
     List dangerSetting = [
       {
         "menuText": "Delete Account",
         "icon": Icons.delete_outline,
         "onTap": (BuildContext context) {
-          print("Delete Account Clicked");
+          DeleteSheet obj = DeleteSheet(
+              title: "Do you sure to delete your account?",
+              prob_function: deleteAccount);
+          obj.showDeleteConfirmationBottomSheet(context);
           // เพิ่มโค้ดลบบัญชีที่นี่
         }
       },
@@ -46,16 +57,12 @@ class _SettingPageState extends State<SettingPage> {
         "icon": Icons.delete,
         "onTap": (BuildContext context) {
           var userProvider = Provider.of<UserProvider>(context, listen: false);
-
-          userProvider.logout();
-          FirebaseAuth.instance.signOut();
-
           Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(builder: (context) => WelcomePage()),
             (Route<dynamic> route) => false, // ลบหน้าทั้งหมดใน stack
           );
-
+          userProvider.logout();
           // เพิ่มโค้ดลบบัญชีที่นี่
         }
       }
@@ -86,17 +93,22 @@ class _SettingPageState extends State<SettingPage> {
                 width: 30,
                 height: 30,
               ),
-              Icon(
-                Icons.account_circle_outlined,
-                size: 80,
-                color: Colors.white,
-              ),
+              profileUrl != null
+                  ? CircleAvatar(
+                      backgroundImage: NetworkImage(profileUrl),
+                      radius: 60,
+                    )
+                  : Icon(
+                      Icons.account_circle_outlined,
+                      size: 80,
+                      color: Colors.white,
+                    ),
               SizedBox(
                 width: 30,
                 height: 10,
               ),
               Text(
-                "profile",
+                user_info?["name"] ?? "Username",
                 style: TextStyle(
                     fontSize: 16,
                     color: Colors.white,

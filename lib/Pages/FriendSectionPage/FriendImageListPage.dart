@@ -42,7 +42,7 @@ class _FriendImageListPageState extends State<FriendImageListPage> {
                     padding: EdgeInsets.all(8),
                     itemCount: imageProvider.images.length,
                     itemBuilder: (context, index) {
-                      var image = imageProvider.images[index];
+                      var image = imageProvider.images[index]["image"]["url"];
                       return GestureDetector(
                         onTap: (){
                           Navigator.pop(context) ;
@@ -51,7 +51,7 @@ class _FriendImageListPageState extends State<FriendImageListPage> {
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(10),
                           child: Image.network(
-                            image["url"],
+                            image,
                             fit: BoxFit.cover,
                           ),
                         ),

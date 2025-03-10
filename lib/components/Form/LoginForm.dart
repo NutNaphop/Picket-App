@@ -1,11 +1,9 @@
-import 'package:camera/camera.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:locket_mockup/Pages/FriendSectionPage/FriendPage.dart';
+import 'package:locket_mockup/Pages/CreateProfilePage.dart';
 import 'package:locket_mockup/Pages/MainSection/HomePage.dart';
+import 'package:locket_mockup/Pages/SettingSection/SettingPage.dart';
 import 'package:locket_mockup/providers/UserProvider.dart';
-import 'package:locket_mockup/screens/HomeScreen.dart';
-import 'package:locket_mockup/screens/createUserScreen.dart';
 import 'package:locket_mockup/service/auth_service.dart';
 import 'package:provider/provider.dart';
 
@@ -41,12 +39,15 @@ class _LoginFormState extends State<LoginForm> {
         email: emailController.text,
         password: passwordController.text,
       );
-
+    
       // ปิด dialog เมื่อล็อกอินสำเร็จ
       Navigator.of(context).pop();
 
       User? user_cred = userCredential.user;
       var _isExist = await checkUser(user_cred!.uid);
+      
+
+      print(_isExist);
 
       if (_isExist) {
         // ใช้ await เพื่อรอให้การดึงข้อมูลเสร็จสิ้นก่อน
@@ -55,7 +56,7 @@ class _LoginFormState extends State<LoginForm> {
       }
 
       // ใช้ destination ขึ้นอยู่กับว่า _isExist หรือไม่
-      var destination = _isExist ? HomePage() : createUserScreen();
+      var destination = _isExist ? HomePage() : CreateProfilePage();
 
       Navigator.pushAndRemoveUntil(
         context,
@@ -73,6 +74,8 @@ class _LoginFormState extends State<LoginForm> {
         errorMessage = "Cannot find this user";
       } else if (e.code == 'wrong-password') {
         errorMessage = "Incorrect Password";
+      } else if (e.code == 'invalid-credential'){
+        errorMessage = "Invalid Credential";
       }
 
       // แสดงข้อความแจ้งเตือน
@@ -113,7 +116,7 @@ class _LoginFormState extends State<LoginForm> {
                 ),
                 TextFormField(
                   controller: emailController,
-                  autofocus: true,
+                  autofocus: false,
                   decoration: InputDecoration(
                       filled: true,
                       fillColor: Colors.white,
