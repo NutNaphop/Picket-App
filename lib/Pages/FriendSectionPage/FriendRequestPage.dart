@@ -149,15 +149,23 @@ class _FriendRequestPageState extends State<FriendRequestPage> {
                         return Center(child: CircularProgressIndicator());
                       }
 
-                      var request = snapshot.data!.docs;
+                      var data = snapshot.data as Map<String, dynamic>;
+                      var profile = data["profile"]; // ข้อมูลโปรไฟล์
+                      var requestList = data["friend_requests"] as List<Map<String, dynamic>>;
 
-                      if (request.isEmpty) {
+                      // อัปเดต requestCount
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        setState(() {
+                          requestCount = requestList.length;
+                        });
+                      });
+
+                      if (requestList.isEmpty) {
                         return Center(
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               Column(
-                                spacing: 5,
                                 children: [
                                   Text(
                                     "The box is empty ...",
@@ -173,35 +181,36 @@ class _FriendRequestPageState extends State<FriendRequestPage> {
                                   ),
                                 ],
                               ),
-                              Icon(
-                                Icons.inbox,
-                                size: 150,
-                                color: Color(0xFF271943),
-                              )
+                              Icon(Icons.inbox,
+                                  size: 150, color: Color(0xFF271943))
                             ],
                           ),
                         );
                       }
 
-                      // เก็บข้อมูลใน request_store เมื่อข้อมูลเปลี่ยนแปลง
-                      request_store = request.map((doc) {
-                        var data = doc.data() as Map<String, dynamic>;
-                        data["rid"] = doc.id;
-                        return data;
-                      }).toList();
+                      // อัปเดต request_store
+                      request_store = requestList;
 
-                      return ListView.separated(
-                        shrinkWrap: true,
-                        itemCount: request_store.length,
-                        separatorBuilder: (context, index) =>
-                            Divider(color: Colors.grey[300], thickness: 1),
-                        itemBuilder: (context, index) {
-                          var reqInfo = request_store[index];
-                          return RequestListTile(
-                            req_info: reqInfo,
-                            handleAcceptEvent: handleAcceptEvent,
-                          );
-                        },
+                      return Column(
+                        children: [
+                          // แสดงโปรไฟล์ผู้ใช้ที่ด้านบน
+                          // แสดงรายการคำขอเป็นเพื่อน
+                          Expanded(
+                            child: ListView.separated(
+                              itemCount: request_store.length,
+                              separatorBuilder: (context, index) => Divider(
+                                  color: Colors.grey[300], thickness: 1),
+                              itemBuilder: (context, index) {
+                                var reqInfo = request_store[index];
+                                reqInfo["profile"] = profile;
+                                return RequestListTile(
+                                  req_info: reqInfo,
+                                  handleAcceptEvent: handleAcceptEvent,
+                                );
+                              },
+                            ),
+                          ),
+                        ],
                       );
                     },
                   ),

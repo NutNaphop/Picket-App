@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:locket_mockup/components/BottomSheet/DeleteFriendSheet.dart';
 import 'package:locket_mockup/helper/Dateformat.dart';
 
 class RequestListTile extends StatefulWidget {
-  final Function(String, String, bool , String) handleAcceptEvent;
+  final Function(String, String, bool, String) handleAcceptEvent;
   Map req_info;
 
   RequestListTile({required this.req_info, required this.handleAcceptEvent});
@@ -12,15 +13,20 @@ class RequestListTile extends StatefulWidget {
 }
 
 class _RequestListTileState extends State<RequestListTile> {
+  
   @override
   Widget build(BuildContext context) {
+    void deleteRequest() {
+      widget.handleAcceptEvent(widget.req_info["from"], widget.req_info["rid"],
+          false, widget.req_info["from_username"]);
+    }
+    print(widget.req_info) ; 
     return ListTile(
       key: ValueKey(widget.req_info["rid"]),
-      leading: Icon(
-        Icons.account_circle,
-        color: Colors.black,
-        size: 43,
-      ),
+      leading: CircleAvatar(
+        backgroundImage: NetworkImage(widget.req_info["profile"]),
+        radius: 20,
+      ) ,
       title: Text(
         widget.req_info["from_username"],
         style: TextStyle(color: Colors.black, fontSize: 16),
@@ -38,7 +44,10 @@ class _RequestListTileState extends State<RequestListTile> {
                 backgroundColor: WidgetStateProperty.all(Colors.green)),
             onPressed: () {
               widget.handleAcceptEvent(
-                  widget.req_info["from"], widget.req_info["rid"], true , widget.req_info["from_username"]);
+                  widget.req_info["from"],
+                  widget.req_info["rid"],
+                  true,
+                  widget.req_info["from_username"]);
             },
           ),
           SizedBox(width: 8), // เว้นระยะห่างระหว่างปุ่ม
@@ -47,8 +56,13 @@ class _RequestListTileState extends State<RequestListTile> {
             style: ButtonStyle(
                 backgroundColor: WidgetStateProperty.all(Colors.red)),
             onPressed: () {
-              widget.handleAcceptEvent(
-                  widget.req_info["from"], widget.req_info["rid"], false , widget.req_info["from_username"]);
+              var title = "Are you sure you want to delete this request?";
+              var snackMsg = "";
+              DeleteFriendSheet(
+                title: title,
+                prop_function: deleteRequest,
+                snackMessage: snackMsg,
+              ).showDeleteConfirmationBottomSheet(context);
             },
           ),
         ],

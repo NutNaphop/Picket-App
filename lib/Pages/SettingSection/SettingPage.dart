@@ -47,7 +47,7 @@ class _SettingPageState extends State<SettingPage> {
         "onTap": (BuildContext context) {
           DeleteSheet obj = DeleteSheet(
               title: "Do you sure to delete your account?",
-              prob_function: deleteAccount);
+              prop_function: deleteAccount);
           obj.showDeleteConfirmationBottomSheet(context);
           // เพิ่มโค้ดลบบัญชีที่นี่
         }

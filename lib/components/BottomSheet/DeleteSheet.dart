@@ -3,9 +3,9 @@ import 'package:locket_mockup/Pages/MainSection/WelcomePage.dart';
 
 class DeleteSheet extends StatelessWidget {
   String title;
-  Function prob_function;
+  Function prop_function;
 
-  DeleteSheet({required this.title, required this.prob_function});
+  DeleteSheet({required this.title, required this.prop_function});
 
   void showDeleteConfirmationBottomSheet(BuildContext context) {
     showModalBottomSheet(
@@ -58,7 +58,7 @@ class DeleteSheet extends StatelessWidget {
                         backgroundColor: const Color.fromARGB(255, 233, 88, 88),
                         foregroundColor: Colors.white),
                     onPressed: () {
-                      prob_function();
+                      prop_function();
                       Navigator.pushAndRemoveUntil(
                           context,
                           MaterialPageRoute(

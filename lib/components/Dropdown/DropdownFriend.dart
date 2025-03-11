@@ -28,6 +28,7 @@ class _DropDownFriendState extends State<DropDownFriend> {
       });
 
       if (newValue != null) {
+        print(friendProvider.friends) ; 
         var selectedFriend = friendProvider.friends
             .firstWhere((friend) => friend["uid"] == newValue);
         imgProvider.setFilter(selectedFriend["uid"]);
@@ -107,10 +108,10 @@ class _DropDownFriendState extends State<DropDownFriend> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   CircleAvatar(
-                    child: Icon(Icons.person),
-                    radius: 20,
+                    child: Icon(Icons.group , size: 30, color: Colors.black,),
+                    backgroundColor: Colors.white,
                   ),
-                  Text("All Friend"),
+                  Text("All Friend" , style: TextStyle(fontSize: 16),),
                   Icon(Icons.arrow_right, color: Colors.deepPurple),
                 ],
               ),
@@ -122,7 +123,7 @@ class _DropDownFriendState extends State<DropDownFriend> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     CircleAvatar(
-                      child: Icon(Icons.person),
+                     backgroundImage: NetworkImage(friend["profile"]),
                       radius: 20,
                     ),
                     Text(friend["name"], style: TextStyle(fontSize: 16)),

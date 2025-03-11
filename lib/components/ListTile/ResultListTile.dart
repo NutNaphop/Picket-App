@@ -1,7 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:locket_mockup/providers/UserProvider.dart';
 import 'package:locket_mockup/service/Friend/CRUD_friend.dart';
+import 'package:provider/provider.dart';
 
 class ResultListTile extends StatefulWidget {
   Map result_info;
@@ -22,11 +24,11 @@ class _ResultListTileState extends State<ResultListTile> {
   }
 
   void addFriend(String friendId) async {
-     bool _isSuccess = await sendFriendRequest(
-        {"uid": FirebaseAuth.instance.currentUser!.uid, "name": "Naphop"},
-         friendId);
+    var userProvider = Provider.of<UserProvider>(context, listen: false);
 
-    
+     bool _isSuccess = await sendFriendRequest(
+        {"uid": userProvider.userData?["uid"], "name": userProvider.userData?["name"]},
+         friendId);
 
     if (_isSuccess) {
       setState(() {

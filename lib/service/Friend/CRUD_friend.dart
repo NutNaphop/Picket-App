@@ -37,12 +37,29 @@ Future getFriendArray(user) async {
   return friendsList;
 }
 
-Stream<QuerySnapshot> getFriendRequests(String uid) {
-  return FirebaseFirestore.instance
+Stream<Map<String, dynamic>> getFriendRequests(String uid) async* {
+  // ดึงข้อมูลโปรไฟล์ก่อน
+  var user = await getUser(uid) as Map<String, dynamic>;
+  var profile = user["profile"];
+
+  // รวมข้อมูลโปรไฟล์เข้ากับสตรีมของ friend_requests
+  yield* FirebaseFirestore.instance
       .collection('friend_requests')
       .where('to', isEqualTo: uid)
-      .snapshots(includeMetadataChanges: true);
+      .snapshots(includeMetadataChanges: true)
+      .map((snapshot) {
+        return {
+          "profile": profile,
+          "friend_requests": snapshot.docs.map((doc) {
+            var data = doc.data() as Map<String, dynamic>;
+            data["rid"] = doc.id;
+            return data;
+          }).toList(),
+        };
+      });
 }
+
+
 
 Future<bool> sendFriendRequest(Map user, String friendId) async {
   bool _isExist = await checkUser(friendId);
@@ -93,7 +110,9 @@ Future<void> acceptFriend(
   }
 }
 
-Future<void> rejectFriend(String requestId,) async {
+Future<void> rejectFriend(
+  String requestId,
+) async {
   // ลบคำขอออกจาก friend_requests
   await FirebaseFirestore.instance
       .collection('friend_requests')
