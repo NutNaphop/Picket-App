@@ -17,9 +17,9 @@ class FriendImageListPage extends StatefulWidget {
 
 class _FriendImageListPageState extends State<FriendImageListPage> {
 
-
   @override
   Widget build(BuildContext context) {
+
     var pageProvider = Provider.of<ControlPageProvider>(context, listen: false);
     final cameraProvider = Provider.of<CameraProvider>(context, listen: false);
     var imageProvider = Provider.of<ImageFriendProvider>(context);
@@ -46,7 +46,7 @@ class _FriendImageListPageState extends State<FriendImageListPage> {
                       return GestureDetector(
                         onTap: (){
                           Navigator.pop(context) ;
-                          pageProvider.pageController.jumpToPage(index + 1) ; 
+                          pageProvider.jumpPage(index + 1) ; 
                         },
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(10),
@@ -66,7 +66,7 @@ class _FriendImageListPageState extends State<FriendImageListPage> {
         onPressed: () {
           Navigator.pop(context);
           cameraProvider.initializeCamera() ; 
-          pageProvider.pageController.jumpToPage(0);
+           pageProvider.jumpPage(0) ; 
         },
         child: Icon(
           Icons.favorite,

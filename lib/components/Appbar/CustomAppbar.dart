@@ -18,9 +18,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       leading: IconButton(
           onPressed: () async {
+            await camProvider.disposeCamera();
             await Navigator.push(context, MaterialPageRoute(
               builder: (context) {
-                camProvider.disposeCamera();
                 return SettingPage();
               },
             ));
@@ -53,10 +53,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       ),
       actions: [
         IconButton(
-          onPressed: () async{
+          onPressed: () async {
+            await camProvider.disposeCamera();
             await Navigator.push(context, MaterialPageRoute(
               builder: (context) {
-                camProvider.disposeCamera();
                 return FriendPage();
               },
             ));

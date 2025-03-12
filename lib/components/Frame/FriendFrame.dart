@@ -60,7 +60,8 @@ void initCamera(){
                       ),
                     ),
                     // กล่องข้อความที่อยู่ด้านล่างของรูป
-                    Positioned(
+                    img_info["caption"] != "" ? 
+                     Positioned(
                       left: 0,
                       right: 0,
                       bottom: 10, // กำหนดระยะห่างจากขอบล่าง
@@ -83,7 +84,9 @@ void initCamera(){
                           ),
                         ),
                       ),
-                    ),
+                    )
+                    :
+                    SizedBox() 
                   ],
                 ),
               )

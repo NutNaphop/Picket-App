@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:locket_mockup/providers/FriendDataProvider.dart';
 import 'package:locket_mockup/providers/FriendImageProvider.dart';
+import 'package:locket_mockup/providers/UserProvider.dart';
 import 'package:provider/provider.dart';
 import 'package:dropdown_button2/dropdown_button2.dart'; // ✅ ใช้ DropdownButton2
 
@@ -19,20 +20,27 @@ class _DropDownFriendState extends State<DropDownFriend> {
   Widget build(BuildContext context) {
     var friendProvider = Provider.of<FriendProvider>(context);
     var imgProvider = Provider.of<ImageFriendProvider>(context);
+    var userProvider = Provider.of<UserProvider>(context, listen: false);
+
     var friendList = friendProvider.friends;
 
     void handleChange(String? newValue) {
+      var u = userProvider.userData;
+      print('Current ${u?["uid"]}');
       setState(() {
         print(newValue);
         dropdownValue = newValue;
       });
 
       if (newValue != null) {
-        print(friendProvider.friends) ; 
-        var selectedFriend = friendProvider.friends
-            .firstWhere((friend) => friend["uid"] == newValue);
-        imgProvider.setFilter(selectedFriend["uid"]);
-        print('Selected Friend ID: ${selectedFriend["uid"]}');
+        if (newValue == userProvider.userData?["uid"]) {
+          var onwerId = userProvider.userData?["uid"];
+          imgProvider.setFilter(onwerId);
+        } else {
+          var selectedFriend = friendProvider.friends
+              .firstWhere((friend) => friend["uid"] == newValue);
+          imgProvider.setFilter(selectedFriend["uid"]);
+        }
       } else {
         imgProvider.clearFilter();
       }
@@ -81,7 +89,8 @@ class _DropDownFriendState extends State<DropDownFriend> {
           ),
           selectedItemBuilder: (BuildContext context) {
             var a = [
-              {"name": "All Friend"}
+              {"name": "All Friend"},
+              {"name": "You"}
             ];
 
             return [
@@ -108,10 +117,35 @@ class _DropDownFriendState extends State<DropDownFriend> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   CircleAvatar(
-                    child: Icon(Icons.group , size: 30, color: Colors.black,),
+                    child: Icon(
+                      Icons.group,
+                      size: 30,
+                      color: Colors.black,
+                    ),
                     backgroundColor: Colors.white,
                   ),
-                  Text("All Friend" , style: TextStyle(fontSize: 16),),
+                  Text(
+                    "All Friend",
+                    style: TextStyle(fontSize: 16),
+                  ),
+                  Icon(Icons.arrow_right, color: Colors.deepPurple),
+                ],
+              ),
+            ),
+            DropdownMenuItem<String>(
+              value: userProvider.userData?["uid"],
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  CircleAvatar(
+                    backgroundImage:
+                        NetworkImage(userProvider.userData?["profile"]),
+                    radius: 20,
+                  ),
+                  Text(
+                    "You",
+                    style: TextStyle(fontSize: 16),
+                  ),
                   Icon(Icons.arrow_right, color: Colors.deepPurple),
                 ],
               ),
@@ -123,7 +157,7 @@ class _DropDownFriendState extends State<DropDownFriend> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     CircleAvatar(
-                     backgroundImage: NetworkImage(friend["profile"]),
+                      backgroundImage: NetworkImage(friend["profile"]),
                       radius: 20,
                     ),
                     Text(friend["name"], style: TextStyle(fontSize: 16)),

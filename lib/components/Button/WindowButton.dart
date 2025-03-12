@@ -13,16 +13,17 @@ class WindowButton extends StatefulWidget {
 class _WindowButtonState extends State<WindowButton> {
   @override
   Widget build(BuildContext context) {
-    final cameraProvider = Provider.of<CameraProvider>(context, listen: false);
+    // final cameraProvider = Provider.of<CameraProvider>(context, listen: false);
 
     return GestureDetector(
       onTap: () {
         Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => FriendImageListPage(),
+              builder: (context){
+                return FriendImageListPage();
+              },
             ));
-        cameraProvider.disposeCamera();
       },
       child: Icon(
         Icons.window_rounded,

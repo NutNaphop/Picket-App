@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:locket_mockup/components/Snackbars/Snackbar.dart';
 
 class ResetForm extends StatefulWidget {
   const ResetForm({super.key});
@@ -13,29 +14,19 @@ class _ResetFormState extends State<ResetForm> {
   final _emailController = TextEditingController();
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  void showSnackbarMessage(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        behavior: SnackBarBehavior.floating,
-        backgroundColor: Colors.green,
-        duration: Duration(seconds: 3),
-      ),
-    );
-  }
-
+ 
   Future<void> resetPassword() async {
     String email = _emailController.text.trim();
     if (email.isEmpty) {
-      showSnackbarMessage("Please enter your email.");
+      showErrorSnackbar(context , "Please enter an email.");
       return;
     }
 
     try {
       await _auth.sendPasswordResetEmail(email: email);
-      showSnackbarMessage("Reset link sent! Check your email.");
+      showSucessSnackbar(context , "Reset link sent! Check your email.");
     } catch (e) {
-      showSnackbarMessage("Error: ${e.toString()}");
+      showErrorSnackbar(context , "Error: ${e.toString()}");
     }
   }
 
@@ -60,7 +51,7 @@ class _ResetFormState extends State<ResetForm> {
               ),
               TextFormField(
                 controller: _emailController,
-                autofocus: true,
+                autofocus: false,
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: Colors.white,

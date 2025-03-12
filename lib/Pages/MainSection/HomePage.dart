@@ -1,13 +1,12 @@
 import 'package:camera/camera.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:locket_mockup/components/Frame/CameraView.dart';
 import 'package:locket_mockup/components/Frame/FriendFrame.dart';
 import 'package:locket_mockup/components/Frame/PreviewFrame.dart';
 import 'package:locket_mockup/providers/CameraProvider.dart';
 import 'package:locket_mockup/providers/ControlPageProvider.dart';
 import 'package:locket_mockup/providers/FriendImageProvider.dart';
-import 'package:locket_mockup/service/Image/Image_service.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
@@ -19,22 +18,19 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   CameraController? _controller;
-  late Future<void> _initializeControllerFuture;
-  Stream<List<QueryDocumentSnapshot<Map<String, dynamic>>>>? _imgFriendStream;
-  String? _imagePath;
-  // final PageController _pageController = PageController();
-  late Future<List<CameraDescription>> _camerasFuture;
 
   @override
   void initState() {
     super.initState();
-      _initCamera();
+    Future.microtask(() => _initCamera());
   }
 
-  void _initCamera() async {
-    var camProvider = Provider.of<CameraProvider>(context, listen: false);
-    await camProvider.initializeCamera();
-  }
+void _initCamera() async {
+  var camProvider = Provider.of<CameraProvider>(context, listen: false);
+  SchedulerBinding.instance.addPostFrameCallback((_) {
+    camProvider.initializeCamera(); // เรียกใช้ทันที ไม่ต้องหน่วงเวลา
+  });
+}
 
   @override
   void dispose() {
@@ -57,12 +53,12 @@ class _HomePageState extends State<HomePage> {
             itemCount: imageProvider.images.length + 1,
             onPageChanged: (index) async {
               if (index == 0) {
-                _initCamera();
-                imageProvider.clearFilter() ; 
-                
-                // imageProvider.fetchImages() ; // It's work but not good u need to make drop down again after 
+                if (!camProvider.isCameraInitialized) {
+                  await camProvider.initializeCamera(); // รอให้กล้องพร้อมก่อน
+                }
               } else {
-                await camProvider.disposeCamera(); // ปิดกล้องเมื่อเปลี่ยนหน้า
+                // ใช้ Future.microtask เพื่อให้ dispose ไม่ไปกระทบ UI ทันที
+                Future.microtask(() => camProvider.disposeCamera());
               }
             },
             itemBuilder: (context, index) {
@@ -72,8 +68,8 @@ class _HomePageState extends State<HomePage> {
                           camProvider.controller != null
                       ? CameraView(
                           controller: camProvider.controller!,
-                          initializeControllerFuture:
-                              camProvider.controller!.initialize(),
+                          initializeControllerFuture: camProvider
+                              .initializeCamera(), // ✅ ไม่ต้องเรียกซ้ำ
                           onPictureTaken: (imagePath) {
                             Navigator.push(
                               context,
@@ -86,15 +82,19 @@ class _HomePageState extends State<HomePage> {
                               ),
                             );
                           },
+                          switchSideCamera: () {
+                            camProvider.switchSideCamera();
+                          },
                         )
-                      : Center(
-                          child:
-                              CircularProgressIndicator()), // ✅ แสดง loading ถ้ายังไม่พร้อม
+                      : Center(child: CircularProgressIndicator()),
                 );
               } else {
                 var img = imageProvider.images[index - 1];
                 return FriendFrame(
-                    friend_info: img, pageController: _pageController , index: index,);
+                  friend_info: img,
+                  pageController: _pageController,
+                  index: index,
+                );
               }
             },
           );

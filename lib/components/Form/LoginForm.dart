@@ -1,8 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:locket_mockup/Pages/CreateProfilePage.dart';
+import 'package:locket_mockup/Pages/ForgotPage.dart';
 import 'package:locket_mockup/Pages/MainSection/HomePage.dart';
-import 'package:locket_mockup/Pages/SettingSection/SettingPage.dart';
+import 'package:locket_mockup/components/Snackbars/Snackbar.dart';
 import 'package:locket_mockup/providers/UserProvider.dart';
 import 'package:locket_mockup/service/auth_service.dart';
 import 'package:provider/provider.dart';
@@ -39,24 +40,25 @@ class _LoginFormState extends State<LoginForm> {
         email: emailController.text,
         password: passwordController.text,
       );
-    
+
       // ปิด dialog เมื่อล็อกอินสำเร็จ
       Navigator.of(context).pop();
 
       User? user_cred = userCredential.user;
       var _isExist = await checkUser(user_cred!.uid);
-      
 
-      print(_isExist);
 
       if (_isExist) {
         // ใช้ await เพื่อรอให้การดึงข้อมูลเสร็จสิ้นก่อน
         await userProvider.fetchUserData(user_cred.uid);
-        print("HELP ${userProvider.userData}");
       }
 
       // ใช้ destination ขึ้นอยู่กับว่า _isExist หรือไม่
       var destination = _isExist ? HomePage() : CreateProfilePage();
+
+      showSucessSnackbar(context, "Login successfully!") ;
+
+      Future.delayed(Duration(seconds: 2));
 
       Navigator.pushAndRemoveUntil(
         context,
@@ -66,29 +68,17 @@ class _LoginFormState extends State<LoginForm> {
     } on FirebaseAuthException catch (e) {
       // ปิด dialog เมื่อเกิดข้อผิดพลาด
       Navigator.of(context).pop();
-      print('ERROE');
-      print(e.code);
       String errorMessage =
           "Something went wrong, Please try again"; // ข้อความผิดพลาดเริ่มต้น
       if (e.code == 'user-not-found') {
         errorMessage = "Cannot find this user";
       } else if (e.code == 'wrong-password') {
         errorMessage = "Incorrect Password";
-      } else if (e.code == 'invalid-credential'){
+      } else if (e.code == 'invalid-credential') {
         errorMessage = "Invalid Credential";
       }
 
-      // แสดงข้อความแจ้งเตือน
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            errorMessage,
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-          ),
-          backgroundColor: Colors.red,
-          behavior: SnackBarBehavior.floating,
-        ),
-      );
+      showErrorSnackbar(context, errorMessage) ;
     }
   }
 
@@ -174,7 +164,12 @@ class _LoginFormState extends State<LoginForm> {
               ],
             ),
             GestureDetector(
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ForgotPasswordPage()));
+              },
               child: Text(
                 'Forgot password?',
                 style: TextStyle(

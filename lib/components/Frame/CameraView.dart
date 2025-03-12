@@ -1,6 +1,5 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:locket_mockup/Pages/FriendSectionPage/FriendImageListPage.dart';
 import 'package:locket_mockup/components/Appbar/CustomAppbar.dart';
 import 'package:locket_mockup/components/Button/WindowButton.dart';
 
@@ -8,11 +7,13 @@ class CameraView extends StatefulWidget {
   final CameraController controller;
   final Future<void> initializeControllerFuture;
   final Function(String) onPictureTaken;
+  final Function() switchSideCamera;
 
   CameraView({
     required this.controller,
     required this.initializeControllerFuture,
     required this.onPictureTaken,
+    required this.switchSideCamera,
   });
 
   @override
@@ -42,16 +43,15 @@ class _CameraViewState extends State<CameraView> {
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(20),
                         child: FittedBox(
-                          fit: BoxFit.cover, // ครอบให้เต็มพื้นที่
+                          fit: BoxFit.cover,
                           child: SizedBox(
-                            width: widget.controller.value.previewSize?.height ??
-                                368,
-                            height:
-                                widget.controller.value.previewSize?.width ?? 368,
+                            width: widget.controller.value.previewSize?.height ?? 368,
+                            height: widget.controller.value.previewSize?.width ?? 368,
                             child: Transform(
-                                alignment: Alignment.center,
-                                transform: Matrix4.identity()..scale(-1.0, 1.0),
-                                child: CameraPreview(widget.controller)),
+                              alignment: Alignment.center,
+                              transform: Matrix4.identity()..scale(-1.0, 1.0),
+                              child: CameraPreview(widget.controller),
+                            ),
                           ),
                         ),
                       ),
@@ -64,16 +64,15 @@ class _CameraViewState extends State<CameraView> {
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(20),
                         child: FittedBox(
-                          fit: BoxFit.cover, // ครอบให้เต็มพื้นที่
+                          fit: BoxFit.cover,
                           child: SizedBox(
-                            width: widget.controller.value.previewSize?.height ??
-                                368,
-                            height:
-                                widget.controller.value.previewSize?.width ?? 368,
+                            width: widget.controller.value.previewSize?.height ?? 368,
+                            height: widget.controller.value.previewSize?.width ?? 368,
                             child: Transform(
-                                alignment: Alignment.center,
-                                transform: Matrix4.identity()..scale(-1.0, 1.0),
-                                child: CameraPreview(widget.controller)),
+                              alignment: Alignment.center,
+                              transform: Matrix4.identity()..scale(-1.0, 1.0),
+                              child: CameraPreview(widget.controller),
+                            ),
                           ),
                         ),
                       ),
@@ -117,7 +116,12 @@ class _CameraViewState extends State<CameraView> {
                     ],
                   ),
                 ),
-                Icon(Icons.restart_alt_rounded, size: 40, color: Colors.white),
+                IconButton(
+                  onPressed: () {
+                    widget.switchSideCamera();
+                  },
+                  icon: Icon(Icons.restart_alt_rounded, size: 40, color: Colors.white),
+                ),
               ],
             ),
           ),

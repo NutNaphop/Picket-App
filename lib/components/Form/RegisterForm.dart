@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:locket_mockup/Pages/LoginPage.dart';
-import 'package:locket_mockup/screens/createUserScreen.dart';
+import 'package:locket_mockup/components/Snackbars/Snackbar.dart';
 
 class RegisterForm extends StatefulWidget {
   const RegisterForm({super.key});
@@ -41,23 +41,13 @@ class _RegisterFormState extends State<RegisterForm> {
           Navigator.pop(context);
 
           // แสดงข้อความแจ้งเตือนว่าสร้างบัญชีสำเร็จ
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                "Create account complete!",
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-              backgroundColor: Colors.green,
-              behavior: SnackBarBehavior.floating,
-              duration: Duration(seconds: 2),
-            ),
-          );
+          showSucessSnackbar(context, "Create account successfully!");
 
           // ตรวจสอบว่าเป็น user ใหม่หรือไม่
           User? user = userCredential.user;
           bool isNewUser = userCredential.additionalUserInfo!.isNewUser;
 
-          await Future.delayed(Duration(seconds: 3)) ; 
+          await Future.delayed(Duration(seconds: 3));
 
           if (isNewUser) {
             // ไปที่หน้า createUserScreen
@@ -68,17 +58,8 @@ class _RegisterFormState extends State<RegisterForm> {
           }
         } else {
           // แสดงข้อความแจ้งเตือนเมื่อรหัสผ่านไม่ตรงกัน
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                "Password isn't match",
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-              backgroundColor: Colors.red,
-              behavior: SnackBarBehavior.floating,
-            ),
-          );
-          Navigator.pop(context) ; 
+          showErrorSnackbar(context, "Password does not match!") ;
+          Navigator.pop(context);
         }
       } on FirebaseAuthException catch (e) {
         // ปิด dialog เมื่อเกิดข้อผิดพลาด
@@ -94,17 +75,7 @@ class _RegisterFormState extends State<RegisterForm> {
           errorMessage = "Email format is wrong";
         }
 
-        // แสดงข้อความแจ้งเตือนข้อผิดพลาด
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              errorMessage,
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            ),
-            backgroundColor: Colors.red,
-            behavior: SnackBarBehavior.floating,
-          ),
-        );
+        showErrorSnackbar(context, errorMessage) ; 
       }
     }
 
@@ -245,8 +216,6 @@ class _RegisterFormState extends State<RegisterForm> {
                   fixedSize: WidgetStateProperty.all(Size(280, 50)),
                   backgroundColor: WidgetStateProperty.all(Color(0xFFF281C1)),
                   foregroundColor: WidgetStateProperty.all(Colors.white),
-
-
                 ),
               ),
             )
