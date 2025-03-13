@@ -26,11 +26,11 @@ class _ResultListTileState extends State<ResultListTile> {
   void addFriend(String friendId) async {
     var userProvider = Provider.of<UserProvider>(context, listen: false);
 
-     bool _isSuccess = await sendFriendRequest(
+     String _isSuccess = await sendFriendRequest(
         {"uid": userProvider.userData?["uid"], "name": userProvider.userData?["name"]},
          friendId);
 
-    if (_isSuccess) {
+    if (_isSuccess == "Success") {
       setState(() {
         _isAdd = true; // อัปเดตสถานะปุ่มใน Local State
       });
@@ -56,6 +56,7 @@ class _ResultListTileState extends State<ResultListTile> {
         ),
       );
     } else {
+      String errMsg = _isSuccess == "Max"? "Failed , Your friend list is full": "Failed , Try again" ; 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Padding(
@@ -63,7 +64,7 @@ class _ResultListTileState extends State<ResultListTile> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-              Text('Failed to send friend request', style: TextStyle(
+              Text(errMsg, style: TextStyle(
                 color: const Color.fromARGB(255, 255, 3, 3),
                 fontSize: 18,
               ),),
@@ -99,7 +100,10 @@ class _ResultListTileState extends State<ResultListTile> {
       ),
       child: ListTile(
         contentPadding: EdgeInsets.symmetric(horizontal: 10),
-        leading: Icon(Icons.account_circle_outlined, size: 40),
+        leading: CircleAvatar(
+          backgroundImage: NetworkImage(widget.result_info["profile"]),
+          radius: 20,
+        ),
         title: Text(
           widget.result_info["name"],
           overflow: TextOverflow.ellipsis,

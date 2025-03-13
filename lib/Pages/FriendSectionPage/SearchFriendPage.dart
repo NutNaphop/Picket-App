@@ -74,6 +74,7 @@ class _SearchFriendPageState extends State<SearchFriendPage> {
                           if (snapshot.hasData) {
 
                             tempList = snapshot.data!;
+                            print(tempList) ; 
                             filteredList =
                                 filteredList.isEmpty ? tempList : filteredList;
 

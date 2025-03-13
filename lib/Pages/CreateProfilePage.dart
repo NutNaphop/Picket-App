@@ -2,8 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:locket_mockup/Pages/MainSection/HomePage.dart';
 import 'package:locket_mockup/components/BottomSheet/ProfileSheet.dart';
+import 'package:locket_mockup/helper/ValidatorFunction.dart';
 import 'package:locket_mockup/service/CRUD.dart';
-
 
 class CreateProfilePage extends StatefulWidget {
   const CreateProfilePage({super.key});
@@ -40,24 +40,22 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
       "uid": user!.uid,
       "url": profileUrl,
     };
-    
+
     try {
       await createUser(userInfo);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text("Profile created successfully!"),
-          backgroundColor: Colors.green,
-          duration: Duration(seconds: 2)
-        ),
+            content: Text("Profile created successfully!"),
+            backgroundColor: Colors.green,
+            duration: Duration(seconds: 2)),
       );
 
-      await Future.delayed(Duration(seconds: 3)) ; 
+      await Future.delayed(Duration(seconds: 3));
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(builder: (context) => HomePage()),
         (Route<dynamic> route) => false, // ลบหน้าทั้งหมดใน stack
       );
-
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -114,17 +112,24 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
                       TextFormField(
                         controller: _usernameController,
                         decoration: InputDecoration(
-                          filled: true,
-                          hintText: "Enter your username",
-                          hintStyle: TextStyle(color: Colors.grey),
-                          fillColor: Colors.white,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                        ),
+                            filled: true,
+                            hintText: "Enter your username",
+                            hintStyle: TextStyle(color: Colors.grey),
+                            fillColor: Colors.white,
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            errorStyle: TextStyle(
+                                color: Colors.yellow,
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold)),
                         validator: (value) {
-                          if (value == null || value.isEmpty) {
+                          var usernameValidate = usernameValidator(value!);
+                          if (value.isEmpty) {
                             return 'Please enter your username';
+                          }
+                          if (usernameValidate != "") {
+                            return usernameValidate;
                           }
                           return null;
                         },
@@ -149,8 +154,7 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
                       fixedSize: WidgetStateProperty.all(Size(280, 50)),
                       backgroundColor:
                           WidgetStateProperty.all(Color(0xFFF281C1)),
-                      foregroundColor:
-                          WidgetStateProperty.all(Colors.white),
+                      foregroundColor: WidgetStateProperty.all(Colors.white),
                     ),
                   ),
                 ),

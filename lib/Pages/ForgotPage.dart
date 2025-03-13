@@ -33,28 +33,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                         fontWeight: FontWeight.w700,
                       ),
                     ),
-                    Stack(
-                      alignment: Alignment.center, // จัดให้ทุกอย่างอยู่ตรงกลาง
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(100),
-                          child: Container(
-                            height: 80,
-                            width: 80,
-                            decoration: BoxDecoration(
-                              color: Color(0xFFF281C1),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(50)),
-                            ),
-                          ),
-                        ),
-                        Icon(
-                          Icons.question_mark,
-                          size: 60,
-                          color: Colors.white,
-                        ),
-                      ],
-                    ),
+                   Icon(Icons.help_outline , size: 150, color: Colors.white,) , 
                     ResetForm() , 
                   ],
                 ),

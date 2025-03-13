@@ -38,6 +38,7 @@ class _ResetFormState extends State<ResetForm> {
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           Column(
+            spacing: 10,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
@@ -54,6 +55,7 @@ class _ResetFormState extends State<ResetForm> {
                 autofocus: false,
                 decoration: InputDecoration(
                   filled: true,
+                  hintText: "example@gmail.com",
                   fillColor: Colors.white,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),

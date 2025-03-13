@@ -40,12 +40,12 @@ Future<void> deleteUserAccount() async {
       // ลบผู้ใช้จาก Firebase Authentication
       await user.delete();
 
-      print("✅ User account deleted successfully!");
+      print("User account deleted successfully!");
     } else {
-      print("⚠ No user is currently signed in.");
+      print("No user is currently signed in.");
     }
   } catch (e) {
-    print("❌ Failed to delete user: $e");
+    print("Failed to delete user: $e");
   }
 }
 
@@ -87,7 +87,6 @@ Future<List> getListOfUser(String uid) async {
   // วนลูปแสดงข้อมูลของแต่ละเอกสาร
   for (var doc in snapshot.docs) {
     var user_id = doc["uid"];
-    print('userId : $user_id');
     String status;
     if (requestedUserIds.contains(user_id)) {
       print('Set Pending');
@@ -102,7 +101,7 @@ Future<List> getListOfUser(String uid) async {
     user_info.add({
       "uid": user_id,
       "name": doc["name"],
-      "profile": "null",
+      "profile": doc["profile"],
       "status": status
     });
   }

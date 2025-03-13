@@ -30,12 +30,10 @@ class _PreviewFrameState extends State<PreviewFrame> {
   void handleUpload() async {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     final user_info = userProvider.userData;
-    final camProvider = Provider.of<CameraProvider>(context , listen: 
-    false) ;
-   
+    final camProvider = Provider.of<CameraProvider>(context, listen: false);
 
-
-    String caption = captionController.text.isNotEmpty ? captionController.text : "" ;
+    String caption =
+        captionController.text.isNotEmpty ? captionController.text : "";
 
     // camProvider.disposeCamera() ;
 
@@ -58,7 +56,6 @@ class _PreviewFrameState extends State<PreviewFrame> {
 
     var imgUrl = await uploadImageToCloudinary(file);
 
-
     await saveImageFireStore({
       "by": user_info?["uid"],
       "caption": caption,
@@ -76,29 +73,10 @@ class _PreviewFrameState extends State<PreviewFrame> {
     await Future.delayed(Duration(seconds: 1));
 
     // TODO : Should call imgProvider to update state
-    //  final imgProvider = Provider.of<ImageFriendProvider>(context , listen: false) ; 
-    // imgProvider.fetchImages() ;
+    final imgProvider = Provider.of<ImageFriendProvider>(context, listen: false);
 
     // 🔹 ใช้ PageRouteBuilder เพื่อให้เลื่อนขึ้น
-    Navigator.pop(context) ; 
-    // Navigator.pushReplacement(
-    //   context,
-    //   PageRouteBuilder(
-    //     transitionDuration: Duration(milliseconds: 500),
-    //     pageBuilder: (context, animation, secondaryAnimation) {
-    //       return HomePage();
-    //     },
-    //     transitionsBuilder: (context, animation, secondaryAnimation, child) {
-    //       return SlideTransition(
-    //         position: Tween<Offset>(
-    //           begin: Offset(0, 1), // เริ่มจากข้างล่าง
-    //           end: Offset.zero, // ไปยังตำแหน่งปกติ
-    //         ).animate(animation),
-    //         child: child,
-    //       );
-    //     },
-    //   ),
-    // );
+    Navigator.pop(context);
   }
 
   @override
@@ -207,7 +185,7 @@ class _PreviewFrameState extends State<PreviewFrame> {
                     ),
                   ),
                   IconButton(
-                      onPressed: (){},
+                      onPressed: () {},
                       icon: Icon(Icons.draw, size: 40, color: Colors.white))
                 ],
               ),

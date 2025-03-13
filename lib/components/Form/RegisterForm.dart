@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:locket_mockup/Pages/LoginPage.dart';
 import 'package:locket_mockup/components/Snackbars/Snackbar.dart';
+import 'package:locket_mockup/helper/ValidatorFunction.dart';
 
 class RegisterForm extends StatefulWidget {
   const RegisterForm({super.key});
@@ -58,7 +59,7 @@ class _RegisterFormState extends State<RegisterForm> {
           }
         } else {
           // แสดงข้อความแจ้งเตือนเมื่อรหัสผ่านไม่ตรงกัน
-          showErrorSnackbar(context, "Password does not match!") ;
+          showErrorSnackbar(context, "Password does not match!");
           Navigator.pop(context);
         }
       } on FirebaseAuthException catch (e) {
@@ -75,7 +76,7 @@ class _RegisterFormState extends State<RegisterForm> {
           errorMessage = "Email format is wrong";
         }
 
-        showErrorSnackbar(context, errorMessage) ; 
+        showErrorSnackbar(context, errorMessage);
       }
     }
 
@@ -153,7 +154,12 @@ class _RegisterFormState extends State<RegisterForm> {
                           fontSize: 14,
                           fontWeight: FontWeight.bold)),
                   validator: (value) {
-                    if (value!.isEmpty) return 'Please enter your password';
+                    var pwdValidate = passwordValidator(value!);
+                    if (value.isEmpty) return 'Please enter your password';
+                    if (pwdValidate != "") {
+                      return pwdValidate;
+                    }
+                    return null;
                   },
                 ),
               ],
@@ -194,6 +200,7 @@ class _RegisterFormState extends State<RegisterForm> {
                           fontWeight: FontWeight.bold)),
                   validator: (value) {
                     if (value!.isEmpty) return 'Please enter your password';
+                    return null ; 
                   },
                 ),
               ],
@@ -205,6 +212,7 @@ class _RegisterFormState extends State<RegisterForm> {
               child: ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
+                    print('Sign UP');
                     signUserUp();
                   }
                 },

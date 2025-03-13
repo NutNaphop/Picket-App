@@ -24,6 +24,7 @@ class _LoginFormState extends State<LoginForm> {
   void signUserIn() async {
     // แสดง CircularProgressIndicator
     final userProvider = Provider.of<UserProvider>(context, listen: false);
+    
     showDialog(
       context: context,
       barrierDismissible: false, // ป้องกันการปิด dialog โดยการคลิกที่พื้นหลัง
@@ -47,7 +48,6 @@ class _LoginFormState extends State<LoginForm> {
       User? user_cred = userCredential.user;
       var _isExist = await checkUser(user_cred!.uid);
 
-
       if (_isExist) {
         // ใช้ await เพื่อรอให้การดึงข้อมูลเสร็จสิ้นก่อน
         await userProvider.fetchUserData(user_cred.uid);
@@ -56,9 +56,10 @@ class _LoginFormState extends State<LoginForm> {
       // ใช้ destination ขึ้นอยู่กับว่า _isExist หรือไม่
       var destination = _isExist ? HomePage() : CreateProfilePage();
 
-      showSucessSnackbar(context, "Login successfully!") ;
-
-      Future.delayed(Duration(seconds: 2));
+      showSucessSnackbar(context, "Login successfully!");
+      
+      FocusScope.of(context).unfocus();
+      await Future.delayed(Duration(seconds: 2));
 
       Navigator.pushAndRemoveUntil(
         context,
@@ -78,7 +79,7 @@ class _LoginFormState extends State<LoginForm> {
         errorMessage = "Invalid Credential";
       }
 
-      showErrorSnackbar(context, errorMessage) ;
+      showErrorSnackbar(context, errorMessage);
     }
   }
 

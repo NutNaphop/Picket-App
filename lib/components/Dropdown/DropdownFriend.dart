@@ -47,7 +47,15 @@ class _DropDownFriendState extends State<DropDownFriend> {
     }
 
     if (friendProvider.friends.isEmpty) {
-      return Center(child: CircularProgressIndicator());
+      return Center(child: Container(
+        width: 170,
+        height: 37,
+        decoration: BoxDecoration(
+          color: Colors.white ,
+          borderRadius: BorderRadius.circular(20)
+        ),
+        child: Center(child: Text("No friend" , style: TextStyle(fontSize: 17),)),
+      ),);
     }
 
     return Container(

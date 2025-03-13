@@ -34,7 +34,7 @@ void initCamera(){
     return Scaffold(
       appBar: CustomAppBarWithFilter(),
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           SizedBox(
             height: 50,
@@ -151,35 +151,6 @@ void initCamera(){
               ],
             ),
           ),
-          Column(
-            children: [
-              Center(
-                child: Container(
-                  width: 100,
-                  height: 50,
-                  child: Row(
-                    spacing: 5,
-                    children: [
-                      Icon(
-                        Icons.image,
-                        size: 30,
-                        color: Colors.white,
-                      ),
-                      Text(
-                        "History",
-                        style: TextStyle(fontSize: 16, color: Colors.white),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-              Icon(
-                Icons.keyboard_arrow_down,
-                size: 30,
-                color: Colors.white,
-              )
-            ],
-          )
         ],
       ),
     );

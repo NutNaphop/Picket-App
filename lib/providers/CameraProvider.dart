@@ -12,62 +12,60 @@ class CameraProvider extends ChangeNotifier {
   CameraController? get controller => _controller;
   bool get isCameraInitialized => _isCameraInitialized;
 
-  Future<void> initializeCamera() async {
+  Future<void> initializeCamera({bool useFrontCamera = true}) async {
     if (_isCameraInitialized || _controller != null) {
-      print("Camera is already initialized");
-      return; // ✅ ป้องกันการเปิดซ้ำซ้อน
+      print("📷 กล้องเปิดอยู่แล้ว");
+      return;
     }
 
-    CameraDescription? frontCamera = cameras.firstWhere(
-      (camera) => camera.lensDirection == CameraLensDirection.front,
-      orElse: () => cameras.isNotEmpty
-          ? cameras.first
-          : throw Exception("No cameras available"),
-    );
+    // เลือกกล้องตามเงื่อนไขที่กำหนด
+    CameraDescription? selectedCamera;
+    if (useFrontCamera) {
+      selectedCamera = cameras.firstWhere(
+        (camera) => camera.lensDirection == CameraLensDirection.front,
+        orElse: () => cameras.isNotEmpty
+            ? cameras.first
+            : throw Exception("🚫 ไม่มีกล้องให้ใช้งาน"),
+      );
+    } else {
+      selectedCamera = cameras.firstWhere(
+        (camera) => camera.lensDirection == CameraLensDirection.back,
+        orElse: () => cameras.isNotEmpty
+            ? cameras.first
+            : throw Exception("🚫 ไม่มีกล้องให้ใช้งาน"),
+      );
+    }
 
     _controller = CameraController(
-      frontCamera,
-      ResolutionPreset.medium,
-      imageFormatGroup: ImageFormatGroup.yuv420,
+      selectedCamera,
+      ResolutionPreset.max,
+      imageFormatGroup: ImageFormatGroup.jpeg,
     );
 
     try {
       await _controller!.initialize();
       _isCameraInitialized = true;
       notifyListeners();
+      print("✅ กล้อง ${selectedCamera.lensDirection} เปิดสำเร็จ");
     } catch (e) {
-      print('Error initializing camera: $e');
+      print('❌ Error initializing camera: $e');
     }
   }
 
   // ฟังก์ชันเพื่อสลับกล้องหน้า-หลัง
   Future<void> switchSideCamera() async {
     if (_controller == null || !_controller!.value.isInitialized) {
-      print("Camera not initialized");
+      print("🚫 กล้องยังไม่เปิด");
       return;
     }
 
-    await disposeCamera(); // ✅ ปิดกล้องเก่าก่อน
+    bool isUsingFrontCamera =
+        _controller!.description.lensDirection == CameraLensDirection.front;
 
-    // หาค่ากล้องที่ไม่เหมือนกับกล้องปัจจุบัน
-    CameraDescription newCamera = cameras.firstWhere(
-      (camera) =>
-          camera.lensDirection != _controller!.description.lensDirection,
-      orElse: () => throw Exception("No other camera available"),
-    );
+    await disposeCamera(); // ปิดกล้องเก่า
 
-    _controller = CameraController(
-      newCamera,
-      ResolutionPreset.medium,
-      imageFormatGroup: ImageFormatGroup.yuv420,
-    );
-
-    try {
-      await _controller!.initialize();
-      notifyListeners();
-    } catch (e) {
-      print("Error switching camera: $e");
-    }
+    // เปิดกล้องใหม่โดยสลับจากกล้องที่ใช้อยู่
+    await initializeCamera(useFrontCamera: !isUsingFrontCamera);
   }
 
   Future<void> disposeCamera() async {

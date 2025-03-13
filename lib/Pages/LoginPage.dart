@@ -20,45 +20,43 @@ class _LoginPageState extends State<LoginPage> {
             margin: EdgeInsets.only(top: 30, bottom: 30),
             padding: EdgeInsets.only(left: 30, right: 30),
             child: Column(
+              spacing: 50,
               children: [
-                Column(
-                  spacing: 30,
+                Text(
+                  "Login",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 48,
+                    fontFamily: 'Josefin Sans',
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                Logo(width: 80, height: 80),
+                LoginForm(),
+                Row(
+                  spacing: 5,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "Login",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 48,
-                        fontFamily: 'Josefin Sans',
-                        fontWeight: FontWeight.w700,
-                      ),
+                      "Don't you have any account",
+                      style: TextStyle(color: Colors.white),
+                      textAlign: TextAlign.center,
                     ),
-                    Logo(width: 80, height: 80) , 
-                    LoginForm(),
-                    Row(
-                      spacing: 5,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          "Don't you have any account",
-                          style: TextStyle(color: Colors.white),
-                          textAlign: TextAlign.center,
-                        ) ,
-                        GestureDetector(
-                          onTap: (){
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => RegisterPage(),)) ; 
-                          },
-                          child: Text("Register now" , style: TextStyle(
-                            color: Color(0xFFF281C1)
-                          ),
-                          
-                          )
-                          ,
-                        )
-                      ],
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => RegisterPage(),
+                            ));
+                      },
+                      child: Text(
+                        "Register now",
+                        style: TextStyle(color: Color(0xFFF281C1)),
+                      ),
                     )
                   ],
-                ),
+                )
               ],
             ),
           ),

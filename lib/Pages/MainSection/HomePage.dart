@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:locket_mockup/components/Frame/CameraView.dart';
 import 'package:locket_mockup/components/Frame/FriendFrame.dart';
+import 'package:locket_mockup/components/Frame/NothingFrame.dart';
 import 'package:locket_mockup/components/Frame/PreviewFrame.dart';
 import 'package:locket_mockup/providers/CameraProvider.dart';
 import 'package:locket_mockup/providers/ControlPageProvider.dart';
@@ -89,6 +90,7 @@ void _initCamera() async {
                       : Center(child: CircularProgressIndicator()),
                 );
               } else {
+
                 var img = imageProvider.images[index - 1];
                 return FriendFrame(
                   friend_info: img,

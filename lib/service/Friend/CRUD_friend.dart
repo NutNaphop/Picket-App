@@ -51,7 +51,7 @@ Stream<Map<String, dynamic>> getFriendRequests(String uid) async* {
         return {
           "profile": profile,
           "friend_requests": snapshot.docs.map((doc) {
-            var data = doc.data() as Map<String, dynamic>;
+            var data = doc.data();
             data["rid"] = doc.id;
             return data;
           }).toList(),
@@ -61,8 +61,14 @@ Stream<Map<String, dynamic>> getFriendRequests(String uid) async* {
 
 
 
-Future<bool> sendFriendRequest(Map user, String friendId) async {
+Future<String> sendFriendRequest(Map user, String friendId) async {
   bool _isExist = await checkUser(friendId);
+  var user_info = await getUser(user["uid"]) as Map<String,dynamic>; 
+  var friend_list = user_info["friends"] as List<dynamic>;
+
+  if(friend_list.length > 20){
+    return "Max";
+  }
 
   if (_isExist && friendId.isNotEmpty) {
     var snapshot = await FirebaseFirestore.instance
@@ -78,13 +84,13 @@ Future<bool> sendFriendRequest(Map user, String friendId) async {
         'to': friendId,
         'date': Timestamp.now()
       });
-      return true;
+      return "Success";
     } else {
       print('Friend request already exists.');
     }
   }
 
-  return false;
+  return "Fail";
 }
 
 Future<void> acceptFriend(
