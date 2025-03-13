@@ -46,7 +46,7 @@ class _WelcomeWidgetState extends State<WelcomeWidget> {
                         borderRadius: BorderRadius.circular(15)),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(10),
-                      child: Image.network("https://res.cloudinary.com/dzfeowrkg/image/upload/v1741155664/S__31408133_0_gdmsum.jpg" , fit: BoxFit.cover),
+                      child: Image.network("https://i.pinimg.com/736x/24/9a/8b/249a8b035cb7f4c724c93f8275c093ca.jpg" , fit: BoxFit.cover),
                     )
                   ),
                   Container(
