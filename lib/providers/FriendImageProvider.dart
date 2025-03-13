@@ -8,13 +8,13 @@ class ImageFriendProvider with ChangeNotifier {
   List<Map<String, dynamic>> _allImagesTemp = [];
   String? filterBy; // ตัวแปรสำหรับเก็บ ID ของเพื่อนที่เลือก
   int _prevImageCount = 0; // ✅ เก็บจำนวนรูปภาพก่อนหน้
-  List<Map<String, dynamic>> get images {
-    // ✅ ถ้ามีการกรอง จะแสดงเฉพาะรูปของเพื่อนที่เลือก
-    if (filterBy != null) {
-      return _allImages.where((img) => img["by"] == filterBy).toList();
-    }
-    return _allImagesTemp;
+List<Map<String, dynamic>> get images {
+  if (filterBy != null) {
+    var filteredImages = _allImages.where((img) => img["by"] == filterBy).toList();
+    return filteredImages.isNotEmpty ? filteredImages : [{"noImage": true}];
   }
+  return _allImagesTemp.isNotEmpty ? _allImagesTemp : [{"noImage": true}];
+}
 
   bool get isLoading => _isLoading;
   
