@@ -114,6 +114,7 @@ class _LoginFormState extends State<LoginForm> {
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
+                      hintText: "example@gmail.com",
                       errorStyle: TextStyle(
                           color: Colors.yellow,
                           fontSize: 14,
@@ -145,6 +146,7 @@ class _LoginFormState extends State<LoginForm> {
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
+                      hintText: "xxxxxxxxxxx",
                       suffixIcon: GestureDetector(
                           onTap: () {
                             setState(() {

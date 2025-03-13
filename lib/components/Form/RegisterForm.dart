@@ -109,6 +109,7 @@ class _RegisterFormState extends State<RegisterForm> {
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
+                      hintText: "domain@gmail.com",
                       errorStyle: TextStyle(
                           color: Colors.yellow,
                           fontSize: 14,
@@ -140,6 +141,7 @@ class _RegisterFormState extends State<RegisterForm> {
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
+                      hintText: "xxxxxxxxxxx",
                       suffixIcon: GestureDetector(
                           onTap: () {
                             setState(() {
@@ -185,6 +187,7 @@ class _RegisterFormState extends State<RegisterForm> {
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
+                      hintText: "xxxxxxxxxxx",
                       suffixIcon: GestureDetector(
                           onTap: () {
                             setState(() {
@@ -200,7 +203,7 @@ class _RegisterFormState extends State<RegisterForm> {
                           fontWeight: FontWeight.bold)),
                   validator: (value) {
                     if (value!.isEmpty) return 'Please enter your password';
-                    return null ; 
+                    return null;
                   },
                 ),
               ],
