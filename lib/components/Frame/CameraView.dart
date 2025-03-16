@@ -127,6 +127,7 @@ class _CameraViewState extends State<CameraView> {
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
+
             children: [
               Center(
                 child: Container(
