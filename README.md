@@ -1,4 +1,5 @@
 # Picket
+For demo video [here](https://drive.google.com/file/d/1pYrONK6gz22HkTTgMOf4Slv4IjTBh-1z/view?usp=sharing)
 
 Picket is an app inspired by the Locket widget, where you can snap a picture with your phone and share your moments with your friends. It's designed to make sharing your day-to-day memories fun and simple.
 
