@@ -25,7 +25,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   spacing: 30,
                   children: [
                     Text(
-                      "Sign Up",
+                      "SIGN UP",
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 48,

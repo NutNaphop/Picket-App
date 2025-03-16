@@ -22,16 +22,18 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
             child: Column(
               children: [
                 Column(
-                  spacing: 30,
+                  spacing: 10,
                   children: [
                     Text(
                       "Forgot Password",
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 40,
+                        fontSize: 50,
                         fontFamily: 'Josefin Sans',
                         fontWeight: FontWeight.w700,
+                      
                       ),
+                      textAlign: TextAlign.center,
                     ),
                    Icon(Icons.help_outline , size: 150, color: Colors.white,) , 
                     ResetForm() , 

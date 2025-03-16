@@ -44,7 +44,7 @@ class _SearchFriendPageState extends State<SearchFriendPage> {
               size: 20, color: Colors.white),
         ),
         title: Text("Add new friend",
-            style: TextStyle(fontSize: 24, color: Colors.white)),
+            style: TextStyle(fontSize: 24, color: Colors.white , fontFamily: "Josefin Sans" , fontWeight: FontWeight.bold)),
         centerTitle: true,
         backgroundColor: Colors.transparent,
       ),

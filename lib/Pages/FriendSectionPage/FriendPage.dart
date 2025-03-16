@@ -54,7 +54,7 @@ class _FriendPageState extends State<FriendPage> {
               color: Colors.white,
             )),
         title:
-            Text("Friend", style: TextStyle(fontSize: 24, color: Colors.white)),
+            Text("Friend", style: TextStyle(fontSize: 24, color: Colors.white , fontFamily: "Josefin Sans" , fontWeight: FontWeight.bold)),
         centerTitle: true,
         backgroundColor: Colors.transparent,
       ),

@@ -35,19 +35,21 @@ class _WelcomePageState extends State<WelcomePage> {
                         "Picket",
                         style: TextStyle(
                             color: Colors.white,
-                            fontSize: 64,
-                            fontWeight: FontWeight.bold),
+                            fontSize: 65,
+                            fontWeight: FontWeight.bold ,
+                            fontFamily: "Josefin Sans"),
                       ),
                     ],
                   ),
                   Container(
-                    height: 50,
-                    width: 250,
+                    height: 75,
+                    width: 300,
                     child: Text(
                       "Live photo from your friends on your home screen",
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 16,
+                        fontSize: 20,
+                        fontFamily: "Inter"
                       ),
                       textAlign: TextAlign.center,
                     ),

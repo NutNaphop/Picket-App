@@ -101,7 +101,7 @@ class _EditUsernamePageState extends State<EditUsernamePage> {
               color: Colors.white,
             )),
         title: Text("Edit Profile",
-            style: TextStyle(fontSize: 24, color: Colors.white)),
+            style: TextStyle(fontSize: 24, color: Colors.white , fontFamily: "Josefin Sans" , fontWeight: FontWeight.bold)),
         centerTitle: true,
         backgroundColor: Colors.transparent,
       ),
@@ -134,9 +134,9 @@ class _EditUsernamePageState extends State<EditUsernamePage> {
                       Text(
                         "Edit your username",
                         style: TextStyle(
-                            fontSize: 20,
+                            fontSize: 18,
                             color: Colors.white,
-                            fontWeight: FontWeight.bold),
+                            ),
                         textAlign: TextAlign.center,
                       ),
                       SizedBox(height: 10),

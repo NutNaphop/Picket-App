@@ -102,7 +102,7 @@ class _FriendRequestPageState extends State<FriendRequestPage> {
               color: Colors.white,
             )),
         title: Text("Friend Request",
-            style: TextStyle(fontSize: 24, color: Colors.white)),
+            style: TextStyle(fontSize: 24, color: Colors.white , fontFamily: "Josefin Sans" , fontWeight: FontWeight.bold)),
         centerTitle: true,
         backgroundColor: Colors.transparent,
       ),

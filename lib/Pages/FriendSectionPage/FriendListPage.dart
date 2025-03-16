@@ -56,7 +56,7 @@ class _FriendListPageState extends State<FriendListPage> {
               color: Colors.white,
             )),
         title: Text("Your Friends",
-            style: TextStyle(fontSize: 24, color: Colors.white)),
+            style: TextStyle(fontSize: 24, color: Colors.white , fontFamily: "Josefin Sans" , fontWeight: FontWeight.bold)),
         centerTitle: true,
         backgroundColor: Colors.transparent,
       ),

@@ -36,7 +36,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                   style: TextStyle(
                       fontSize: 16,
                       color: Colors.white,
-                      fontWeight: FontWeight.bold)),
+                      fontWeight: FontWeight.bold ,
+                      fontFamily: "Josefin Sans") ,),
               Icon(Icons.favorite, size: 21, color: Colors.pink[100]),
             ],
           ),

@@ -87,7 +87,7 @@ class _SettingPageState extends State<SettingPage> {
               color: Colors.white,
             )),
         title: Text("Settings",
-            style: TextStyle(fontSize: 24, color: Colors.white)),
+            style: TextStyle(fontSize: 24, color: Colors.white , fontFamily: "Josefin Sans" , fontWeight: FontWeight.bold)),
         centerTitle: true,
         backgroundColor: Colors.transparent,
       ),
@@ -137,7 +137,9 @@ class _SettingPageState extends State<SettingPage> {
                     style: TextStyle(
                         color: Colors.white,
                         fontSize: 16,
-                        fontWeight: FontWeight.bold),
+                        fontWeight: FontWeight.bold ,
+                        fontFamily: "Josefin Sans"
+                        ),
                   )
                 ],
               ),
@@ -159,7 +161,9 @@ class _SettingPageState extends State<SettingPage> {
                     style: TextStyle(
                         color: Colors.white,
                         fontSize: 16,
-                        fontWeight: FontWeight.bold),
+                        fontWeight: FontWeight.bold ,
+                        fontFamily: "Josefin Sans"
+                        ),
                   ),
                 ],
               ),

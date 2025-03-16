@@ -23,7 +23,7 @@ class _LoginPageState extends State<LoginPage> {
               spacing: 50,
               children: [
                 Text(
-                  "Login",
+                  "LOGIN",
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 48,

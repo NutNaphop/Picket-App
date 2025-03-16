@@ -43,7 +43,7 @@ class Myapp extends StatelessWidget {
       return MaterialApp(
         debugShowCheckedModeBanner: false,
         title: "Pocket",
-        theme: ThemeData(scaffoldBackgroundColor: Color(0xFF271943)),
+        theme: ThemeData(scaffoldBackgroundColor: Color(0xFF271943) , fontFamily: "Inter"),
         home: AuthPage(), 
       );
     });
