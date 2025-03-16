@@ -45,7 +45,7 @@ class _FriendImageListPageState extends State<FriendImageListPage> {
 
 Widget _buildBody(ImageFriendProvider imageProvider,
     ControlPageProvider pageProvider, BuildContext context) {
-  if (imageProvider.images.isEmpty) {
+  if (imageProvider.images.isEmpty || imageProvider.images[0]["noImage"] == true) {
     return Center(
       child: Container(
         width: 300,
@@ -61,7 +61,10 @@ Widget _buildBody(ImageFriendProvider imageProvider,
             ),
             Text(
               "No sended image",
-              style: TextStyle(fontSize: 25, color: Colors.white , fontWeight: FontWeight.bold ),
+              style: TextStyle(
+                  fontSize: 25,
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold),
             ),
             Text(
               "There is no image here hmmm... Let's take a photo !",
@@ -85,7 +88,17 @@ Widget _buildBody(ImageFriendProvider imageProvider,
     padding: EdgeInsets.all(8),
     itemCount: imageProvider.images.length,
     itemBuilder: (context, index) {
-      var image = imageProvider.images[index]["image"]["url"];
+      var imageData = imageProvider.images[index];
+
+      if (imageData == null ||
+          imageData["image"] == null ||
+          imageData["image"]["url"] == null) {
+        return Container(
+          color: Colors.grey, // หรือใส่ Icon หรือ Text แจ้งเตือน
+          child: Icon(Icons.image_not_supported, size: 50, color: Colors.white),
+        );
+      }
+
       return GestureDetector(
         onTap: () {
           Navigator.pop(context);
@@ -93,7 +106,7 @@ Widget _buildBody(ImageFriendProvider imageProvider,
         },
         child: ClipRRect(
           borderRadius: BorderRadius.circular(10),
-          child: Image.network(image, fit: BoxFit.cover),
+          child: Image.network(imageData["image"]["url"], fit: BoxFit.cover),
         ),
       );
     },
