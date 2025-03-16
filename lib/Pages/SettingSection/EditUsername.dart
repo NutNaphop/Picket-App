@@ -15,11 +15,12 @@ class EditUsernamePage extends StatefulWidget {
 class _EditUsernamePageState extends State<EditUsernamePage> {
   final _formKey = GlobalKey<FormState>();
   late String profileUrl;
-
+  late TextEditingController _usernameController;
   void setVariable() async {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     final user_info = userProvider.userData;
     profileUrl = user_info?["profile"];
+    _usernameController = TextEditingController(text: user_info?["name"]);
   }
 
   @override
@@ -40,7 +41,6 @@ class _EditUsernamePageState extends State<EditUsernamePage> {
   Widget build(BuildContext context) {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     final user_info = userProvider.userData;
-    final _usernameController = TextEditingController(text: user_info?["name"]);
     bool _isLoading = false;
 
     print(user_info);
@@ -69,7 +69,7 @@ class _EditUsernamePageState extends State<EditUsernamePage> {
 
         // บังคับให้ UI อัปเดตทันที
         setState(() {
-          _isLoading = false ; 
+          _isLoading = false;
         });
 
         ScaffoldMessenger.of(context).showSnackBar(
@@ -169,7 +169,6 @@ class _EditUsernamePageState extends State<EditUsernamePage> {
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
                         handleUpdateSubmit();
-                        _usernameController.clear();
                       }
                     },
                     style: ButtonStyle(
@@ -182,10 +181,13 @@ class _EditUsernamePageState extends State<EditUsernamePage> {
                         ? Center(
                             child: CircularProgressIndicator(),
                           )
-                        : Text("Saved Change" , style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),),
+                        : Text(
+                            "Saved Change",
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                   ),
                 )
               ],

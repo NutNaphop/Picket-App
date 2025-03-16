@@ -17,6 +17,7 @@ class FriendProvider extends ChangeNotifier {
     // ใช้ฟังก์ชัน getFriendList เพื่อดึงข้อมูลเพื่อน
     getFriendList(userId).listen((arg) {
       _friends = arg;
+      notifyListeners();
     });
   }
 }
