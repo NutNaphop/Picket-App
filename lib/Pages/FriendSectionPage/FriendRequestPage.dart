@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:locket_mockup/components/ListTile/RequestListTile.dart';
+import 'package:locket_mockup/components/Snackbars/Snackbar.dart';
 import 'package:locket_mockup/service/Friend/CRUD_friend.dart';
 
 class FriendRequestPage extends StatefulWidget {
@@ -30,61 +31,13 @@ class _FriendRequestPageState extends State<FriendRequestPage> {
       print("Accepted");
       acceptFriend(
           FirebaseAuth.instance.currentUser!.uid, requestId, fromUserId);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-            content: Padding(
-              padding: EdgeInsets.all(10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Text(
-                    'You are now friend with $friend_name',
-                    style: TextStyle(
-                      color: const Color.fromARGB(255, 28, 181, 89),
-                      fontSize: 16.5,
-                    ),
-                  ),
-                  Icon(
-                    Icons.check_circle_outline,
-                    color: const Color.fromARGB(255, 28, 181, 89),
-                  ),
-                ],
-              ),
-            ),
-            backgroundColor: const Color.fromARGB(255, 248, 249, 250),
-            behavior: SnackBarBehavior.floating,
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10))),
-      );
+      var msg = "You are now friend with $friend_name";
+      showSucessSnackbar(context, msg);
     } else {
       print("Rejected");
       rejectFriend(requestId);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-            content: Padding(
-              padding: EdgeInsets.all(10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Text(
-                    "You have rejected ${friend_name}'s request!",
-                    style: TextStyle(
-                      color: const Color.fromARGB(255, 255, 3, 3),
-                      fontSize: 16.5,
-                    ),
-                  ),
-                  Icon(
-                    Icons.cancel,
-                    color: const Color.fromARGB(255, 255, 3, 3),
-                  )
-                ],
-              ),
-            ),
-            backgroundColor: const Color.fromARGB(255, 254, 254, 254),
-            behavior: SnackBarBehavior.floating,
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10))),
-      );
+      var msg = "You have rejected ${friend_name}'s request!" ; 
+      showErrorSnackbar(context, msg);
     }
   }
 
@@ -102,7 +55,11 @@ class _FriendRequestPageState extends State<FriendRequestPage> {
               color: Colors.white,
             )),
         title: Text("Friend Request",
-            style: TextStyle(fontSize: 24, color: Colors.white , fontFamily: "Josefin Sans" , fontWeight: FontWeight.bold)),
+            style: TextStyle(
+                fontSize: 24,
+                color: Colors.white,
+                fontFamily: "Josefin Sans",
+                fontWeight: FontWeight.bold)),
         centerTitle: true,
         backgroundColor: Colors.transparent,
       ),
@@ -151,7 +108,8 @@ class _FriendRequestPageState extends State<FriendRequestPage> {
 
                       var data = snapshot.data as Map<String, dynamic>;
                       var profile = data["profile"]; // ข้อมูลโปรไฟล์
-                      var requestList = data["friend_requests"] as List<Map<String, dynamic>>;
+                      var requestList =
+                          data["friend_requests"] as List<Map<String, dynamic>>;
 
                       // อัปเดต requestCount
                       WidgetsBinding.instance.addPostFrameCallback((_) {

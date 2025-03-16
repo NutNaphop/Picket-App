@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:locket_mockup/components/Snackbars/Snackbar.dart';
 import 'package:locket_mockup/providers/UserProvider.dart';
 import 'package:locket_mockup/service/Friend/CRUD_friend.dart';
 import 'package:provider/provider.dart';
@@ -35,46 +36,11 @@ class _ResultListTileState extends State<ResultListTile> {
         _isAdd = true; // อัปเดตสถานะปุ่มใน Local State
       });
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Padding(
-            padding: EdgeInsets.all(10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Text('Your friend request has been sent', style: TextStyle(
-                  color: const Color.fromARGB(255, 28, 181, 89),
-                  fontSize: 18,
-                ),),
-                Icon(Icons.check_circle_outline, color: const Color.fromARGB(255, 28, 181, 89),),
-              ],
-            ),
-          ),
-          backgroundColor: const Color.fromARGB(255, 248, 249, 250),
-          behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))
-        ),
-      );
+      var msg = "Your friend request has been sent" ;
+      showSucessSnackbar(context, msg) ;
     } else {
       String errMsg = _isSuccess == "Max"? "Failed , Your friend list is full": "Failed , Try again" ; 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Padding(
-            padding: EdgeInsets.all(10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-              Text(errMsg, style: TextStyle(
-                color: const Color.fromARGB(255, 255, 3, 3),
-                fontSize: 18,
-              ),),
-              Icon(Icons.cancel, color: const Color.fromARGB(255, 255, 3, 3),)
-              ],),),
-          backgroundColor: const Color.fromARGB(255, 254, 254, 254),
-          behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))
-        ),
-      );
+      showErrorSnackbar(context, errMsg) ; 
     }
   }
 

@@ -1,8 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:locket_mockup/service/Friend/CRUD_friend.dart';
-import 'package:locket_mockup/service/Image/Image_service.dart';
 
 class FriendProvider extends ChangeNotifier {
   List<Map<String, dynamic>> _friends = [];

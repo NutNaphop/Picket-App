@@ -1,11 +1,9 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:locket_mockup/Pages/MainSection/WelcomePage.dart';
 import 'package:locket_mockup/Pages/SettingSection/EditUsername.dart';
 import 'package:locket_mockup/components/BottomSheet/DeleteSheet.dart';
 import 'package:locket_mockup/components/ListTile/SettingMenu.dart';
 import 'package:locket_mockup/providers/CameraProvider.dart';
-import 'package:locket_mockup/providers/ControlPageProvider.dart';
 import 'package:locket_mockup/providers/UserProvider.dart';
 import 'package:locket_mockup/service/CRUD.dart';
 import 'package:provider/provider.dart';
@@ -57,13 +55,6 @@ class _SettingPageState extends State<SettingPage> {
         "menuText": "Sign Out",
         "icon": Icons.delete,
         "onTap": (BuildContext context) {
-          // var userProvider = Provider.of<UserProvider>(context, listen: false);
-          // var camProvider = Provider.of<CameraProvider>(context, listen: false);
-          // var pageProvider = Provider.of<ControlPageProvider>(context , listen: false) ; 
-
-          // camProvider.dispose() ;
-          // pageProvider.dispose() ; 
-
           Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(builder: (context) => WelcomePage()),

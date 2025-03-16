@@ -13,7 +13,7 @@ String usernameValidator(String username) {
 
 String passwordValidator(String password) {
   if (password.length < 8 || password.length > 20) {
-    return "Password should be between 4 and 20 characters";
+    return "Password should be between 8 and 20 characters";
   }
   if (!RegExp(r'[a-zA-Z]').hasMatch(password)) {
     return "Password should contain at least one alphabet";

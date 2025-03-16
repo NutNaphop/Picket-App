@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:locket_mockup/Pages/MainSection/HomePage.dart';
 import 'package:locket_mockup/components/BottomSheet/ProfileSheet.dart';
+import 'package:locket_mockup/components/Snackbars/Snackbar.dart';
 import 'package:locket_mockup/helper/ValidatorFunction.dart';
 import 'package:locket_mockup/service/CRUD.dart';
 
@@ -43,12 +44,8 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
 
     try {
       await createUser(userInfo);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-            content: Text("Profile created successfully!"),
-            backgroundColor: Colors.green,
-            duration: Duration(seconds: 2)),
-      );
+      var msg = "Profile created successfully!";
+      showSucessSnackbar(context, msg);
 
       await Future.delayed(Duration(seconds: 3));
       Navigator.pushAndRemoveUntil(
@@ -57,12 +54,8 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
         (Route<dynamic> route) => false, // ลบหน้าทั้งหมดใน stack
       );
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text("Failed to create profile: \$e"),
-          backgroundColor: Colors.red,
-        ),
-      );
+      var msg = "Failed to create profile";
+      showErrorSnackbar(context, msg);
     } finally {
       setState(() {
         _isLoading = false;
