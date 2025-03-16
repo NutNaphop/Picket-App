@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image/image.dart' as img;
-import 'package:locket_mockup/Pages/MainSection/HomePage.dart';
 import 'package:locket_mockup/components/Appbar/CustomAppbar.dart';
 import 'package:locket_mockup/providers/CameraProvider.dart';
 import 'package:locket_mockup/providers/FriendImageProvider.dart';

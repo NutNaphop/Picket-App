@@ -10,9 +10,9 @@ build/
 *.iml
 
 # Ignore Folder 
-ios/
-linux/
-macos/
+# ios/
+# linux/
+# macos/
 lib/screens/
 
 # Ignore Dart & Flutter generated files
