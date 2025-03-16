@@ -35,7 +35,7 @@ class _PreviewFrameState extends State<PreviewFrame> {
         captionController.text.isNotEmpty ? captionController.text : "";
 
     // camProvider.disposeCamera() ;
-
+    FocusScope.of(context).unfocus();
     setState(() {
       isUploading = true;
     });
@@ -68,15 +68,14 @@ class _PreviewFrameState extends State<PreviewFrame> {
       isUploaded = true;
     });
 
-    // รอ 1 วินาทีเพื่อให้เห็นไอคอนติ๊กถูก
     await Future.delayed(Duration(seconds: 1));
 
-    // TODO : Should call imgProvider to update state
     final imgProvider =
         Provider.of<ImageFriendProvider>(context, listen: false);
 
-    // 🔹 ใช้ PageRouteBuilder เพื่อให้เลื่อนขึ้น
-    Navigator.pop(context);
+    if (mounted) {
+      Navigator.pop(context);
+    }
   }
 
   @override

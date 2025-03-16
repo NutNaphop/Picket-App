@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:locket_mockup/Pages/SettingSection/SettingPage.dart';
 import 'package:locket_mockup/components/BottomSheet/ProfileSheet.dart';
 import 'package:locket_mockup/providers/UserProvider.dart';
 import 'package:locket_mockup/service/CRUD.dart';
@@ -196,6 +195,5 @@ class _EditUsernamePageState extends State<EditUsernamePage> {
         ),
       ),
     );
-    ;
   }
 }
