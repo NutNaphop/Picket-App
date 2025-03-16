@@ -125,7 +125,8 @@ class _CameraViewState extends State<CameraView> {
               ],
             ),
           ),
-          Column(
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Center(
                 child: Container(
@@ -138,12 +139,12 @@ class _CameraViewState extends State<CameraView> {
                       Text(
                         "History",
                         style: TextStyle(fontSize: 16, color: Colors.white),
-                      ),
+                      ), 
                     ],
                   ),
                 ),
               ),
-              Icon(Icons.keyboard_arrow_down, size: 30, color: Colors.white),
+              Icon(Icons.arrow_downward , size: 30, color: Colors.white,)
             ],
           )
         ],

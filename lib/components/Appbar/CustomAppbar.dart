@@ -16,19 +16,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     }
 
     return AppBar(
-      leading: IconButton(
-          onPressed: () async {
-            await camProvider.disposeCamera();
-            await Navigator.push(context, MaterialPageRoute(
-              builder: (context) {
-                return SettingPage();
-              },
-            ));
-            _initializeCamera();
-          },
-          icon: Icon(Icons.account_circle_outlined,
-              color: Colors.white, size: 40)),
       backgroundColor: Color(0xFF271943),
+      leading: IconButton(
+          onPressed: () {},
+          icon: Icon(Icons.circle, color: Colors.white, size: 30)),
       title: Center(
         child: Container(
           width: 170,
@@ -53,17 +44,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       ),
       actions: [
         IconButton(
-          onPressed: () async {
-            await camProvider.disposeCamera();
-            await Navigator.push(context, MaterialPageRoute(
-              builder: (context) {
-                return FriendPage();
-              },
-            ));
-            _initializeCamera();
-          },
-          icon: Icon(Icons.group, color: Colors.white, size: 34),
-        ),
+            onPressed: () {},
+            icon: Icon(Icons.circle, color: Colors.white, size: 30)),
       ],
     );
   }

@@ -11,30 +11,14 @@ class CustomAppBarWithFilter extends StatelessWidget
   Widget build(BuildContext context) {
     return AppBar(
       leading: IconButton(
-          onPressed: () async {
-            await Navigator.push(context, MaterialPageRoute(
-              builder: (context) {
-                return SettingPage();
-              },
-            ));
-          },
-          icon: Icon(Icons.account_circle_outlined,
-              color: Colors.white, size: 40)),
+          onPressed: () {},
+          icon: Icon(Icons.circle, color: Colors.white, size: 30)),
       backgroundColor: Color(0xFF271943),
-      title: Center(
-        child:  DropDownFriend()
-      ),
+      title: Center(child: DropDownFriend()),
       actions: [
         IconButton(
-          onPressed: () async {
-            await Navigator.push(context, MaterialPageRoute(
-              builder: (context) {
-                return FriendPage();
-              },
-            ));
-          },
-          icon: Icon(Icons.group, color: Colors.white, size: 34),
-        ),
+            onPressed: () {},
+            icon: Icon(Icons.circle, color: Colors.white, size: 30)),
       ],
     );
   }

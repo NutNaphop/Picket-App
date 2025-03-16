@@ -73,7 +73,8 @@ class _PreviewFrameState extends State<PreviewFrame> {
     await Future.delayed(Duration(seconds: 1));
 
     // TODO : Should call imgProvider to update state
-    final imgProvider = Provider.of<ImageFriendProvider>(context, listen: false);
+    final imgProvider =
+        Provider.of<ImageFriendProvider>(context, listen: false);
 
     // 🔹 ใช้ PageRouteBuilder เพื่อให้เลื่อนขึ้น
     Navigator.pop(context);
@@ -86,6 +87,7 @@ class _PreviewFrameState extends State<PreviewFrame> {
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
+          spacing: 5,
           children: [
             SizedBox(height: 60),
             Stack(

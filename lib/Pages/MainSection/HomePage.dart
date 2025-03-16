@@ -1,6 +1,8 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:locket_mockup/Pages/FriendSectionPage/FriendPage.dart';
+import 'package:locket_mockup/Pages/SettingSection/SettingPage.dart';
 import 'package:locket_mockup/components/Frame/CameraView.dart';
 import 'package:locket_mockup/components/Frame/FriendFrame.dart';
 import 'package:locket_mockup/components/Frame/NothingFrame.dart';
@@ -44,6 +46,39 @@ class _HomePageState extends State<HomePage> {
     var pageProvider = Provider.of<ControlPageProvider>(context, listen: false);
     var camProvider = Provider.of<CameraProvider>(context);
     var _pageController = pageProvider.pageController;
+    var _selectIndex = 0;
+
+    void ChangeToFriend() async {
+      if (camProvider.isCameraInitialized) {
+        await camProvider.disposeCamera();
+      }
+
+      await Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => FriendPage()), // เปลี่ยนเป็นหน้า FriendPage
+      );
+
+      if (!camProvider.isCameraInitialized && _pageController.page == 0) {
+        await camProvider.initializeCamera();
+      }
+    }
+
+    void ChangeToSetting() async {
+      if (camProvider.isCameraInitialized) {
+        await camProvider.disposeCamera();
+      }
+
+      await Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => SettingPage()), // เปลี่ยนเป็นหน้า FriendPage
+      );
+
+      if (!camProvider.isCameraInitialized && _pageController.page == 0) {
+        await camProvider.initializeCamera();
+      }
+    }
 
     return Scaffold(
       body: Consumer<ImageFriendProvider>(
@@ -101,6 +136,33 @@ class _HomePageState extends State<HomePage> {
                   );
                 }
               });
+        },
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.group,
+              size: 20,
+            ),
+            label: "Friend",
+          ),
+          BottomNavigationBarItem(
+              icon: Icon(
+                Icons.settings,
+                size: 20,
+              ),
+              label: "Setting"),
+        ],
+        backgroundColor: Colors.transparent,
+        selectedItemColor: Colors.pink[100],
+        unselectedItemColor: Colors.pink[100],
+        onTap: (value) {
+          if (value == 0) {
+            ChangeToFriend();
+          } else if (value == 1) {
+            ChangeToSetting();
+          }
         },
       ),
     );
